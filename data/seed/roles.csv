@@ -1,0 +1,86 @@
+role_id,role_name,category
+1,Data Analyst,Data & AI
+2,Senior Data Analyst,Data & AI
+3,Business Intelligence Analyst,Data & AI
+4,Business Intelligence Developer,Data & AI
+5,Data Scientist,Data & AI
+6,Senior Data Scientist,Data & AI
+7,Machine Learning Engineer,Data & AI
+8,Senior Machine Learning Engineer,Data & AI
+9,AI Engineer,Data & AI
+10,Deep Learning Engineer,Data & AI
+11,NLP Engineer,Data & AI
+12,Computer Vision Engineer,Data & AI
+13,MLOps Engineer,Data & AI
+14,Data Engineer,Data & AI
+15,Big Data Engineer,Data & AI
+16,Analytics Engineer,Data & AI
+17,Research Scientist,Data & AI
+18,AI Research Scientist,Data & AI
+19,Quantitative Analyst,Data & AI
+20,Data Architect,Data & AI
+21,Software Engineer,Software Development
+22,Backend Developer,Software Development
+23,Frontend Developer,Software Development
+24,Full Stack Developer,Software Development
+25,Python Developer,Software Development
+26,Java Developer,Software Development
+27,JavaScript Developer,Software Development
+28,TypeScript Developer,Software Development
+29,C++ Developer,Software Development
+30,C# Developer,Software Development
+31,.NET Developer,Software Development
+32,PHP Developer,Software Development
+33,Go Developer,Software Development
+34,Rust Developer,Software Development
+35,Mobile App Developer,Software Development
+36,Android Developer,Software Development
+37,iOS Developer,Software Development
+38,React Developer,Software Development
+39,Node.js Developer,Software Development
+40,API Developer,Software Development
+41,Cloud Engineer,Cloud & Infrastructure
+42,Cloud Architect,Cloud & Infrastructure
+43,AWS Cloud Engineer,Cloud & Infrastructure
+44,Azure Cloud Engineer,Cloud & Infrastructure
+45,Google Cloud Engineer,Cloud & Infrastructure
+46,DevOps Engineer,Cloud & Infrastructure
+47,Site Reliability Engineer,Cloud & Infrastructure
+48,Platform Engineer,Cloud & Infrastructure
+49,Kubernetes Engineer,Cloud & Infrastructure
+50,Infrastructure Engineer,Cloud & Infrastructure
+51,Systems Engineer,Cloud & Infrastructure
+52,Network Engineer,Cloud & Infrastructure
+53,Network Administrator,Cloud & Infrastructure
+54,Cybersecurity Analyst,Cybersecurity
+55,Security Engineer,Cybersecurity
+56,Security Architect,Cybersecurity
+57,Penetration Tester,Cybersecurity
+58,Ethical Hacker,Cybersecurity
+59,SOC Analyst,Cybersecurity
+60,Cloud Security Engineer,Cybersecurity
+61,Application Security Engineer,Cybersecurity
+62,Incident Response Analyst,Cybersecurity
+63,Digital Forensics Analyst,Cybersecurity
+64,Database Administrator,Database & Enterprise
+65,Database Developer,Database & Enterprise
+66,SQL Developer,Database & Enterprise
+67,Data Warehouse Engineer,Database & Enterprise
+68,ETL Developer,Database & Enterprise
+69,Salesforce Developer,Database & Enterprise
+70,Salesforce Administrator,Database & Enterprise
+71,SAP Consultant,Database & Enterprise
+72,ERP Consultant,Database & Enterprise
+73,Product Manager,Product & Business
+74,Technical Product Manager,Product & Business
+75,Project Manager,Product & Business
+76,Business Analyst,Product & Business
+77,Systems Analyst,Product & Business
+78,Product Designer,Design & UX
+79,UX Designer,Design & UX
+80,UI Designer,Design & UX
+81,UX Researcher,Design & UX
+82,Technical Writer,Technical Communication
+83,Solutions Architect,Architecture & Consulting
+84,Technical Consultant,Architecture & Consulting
+85,IT Consultant,Architecture & Consulting

@@ -1,0 +1,1 @@
+"""Vista Flare FastAPI application."""

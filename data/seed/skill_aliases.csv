@@ -1,0 +1,87 @@
+alias,normalized_skill
+JS,JavaScript
+TS,TypeScript
+ML,Machine Learning
+AI,Artificial Intelligence
+DL,Deep Learning
+ReactJS,React
+React.js,React
+Node,Node.js
+NodeJS,Node.js
+Postgres,PostgreSQL
+GCP,Google Cloud
+K8s,Kubernetes
+PowerBI,Power BI
+TF,TensorFlow
+PyTorch,PyTorch
+CV,Computer Vision
+NLP,Natural Language Processing
+LLM,Large Language Models
+REST,REST API
+API,REST API
+CI,CI/CD
+CD,CI/CD
+CV2,Computer Vision
+OpenCV,Computer Vision
+Pandas,pandas
+numpy,NumPy
+scikit-learn,Scikit-learn
+sklearn,Scikit-learn
+tf,TensorFlow
+pytorch,PyTorch
+react,React
+vue,Vue
+angular,Angular
+django,Django
+flask,Flask
+fastapi,FastAPI
+docker,Docker
+kubernetes,Kubernetes
+aws,AWS
+azure,Azure
+gcp,Google Cloud
+sql,SQL
+postgresql,PostgreSQL
+mysql,MySQL
+mongodb,MongoDB
+redis,Redis
+git,Git
+github,GitHub
+gitlab,GitLab
+linux,Linux
+python,Python
+java,Java
+javascript,JavaScript
+typescript,TypeScript
+csharp,C#
+cpp,C++
+dotnet,.NET
+php,PHP
+go,Go
+rust,Rust
+swift,Swift
+kotlin,Kotlin
+dart,Dart
+scala,Scala
+ruby,Ruby
+r,R
+excel,Excel
+tableau,Tableau
+powerbi,Power BI
+looker,Looker
+spark,Spark
+hadoop,Hadoop
+kafka,Kafka
+airflow,Airflow
+dbt,dbt
+snowflake,Snowflake
+databricks,Databricks
+salesforce,Salesforce
+sap,SAP
+jira,JIRA
+confluence,Confluence
+figma,Figma
+sketch,Sketch
+adobexd,Adobe XD
+photoshop,Photoshop
+illustrator,Illustrator

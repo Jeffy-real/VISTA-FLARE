@@ -1,0 +1,41 @@
+[
+  {
+    "Model": "ANN (MLP)",
+    "Role": "Primary Production Model",
+    "Accuracy": 0.6827,
+    "Top-3 Accuracy": 0.8573,
+    "Precision": 0.697,
+    "Recall": 0.6827,
+    "F1 Score": 0.6821,
+    "Loss": 1.2261,
+    "Parameters": 61013,
+    "Latency (ms/sample)": 0.336,
+    "Training Time": "N/A"
+  },
+  {
+    "Model": "1D CNN",
+    "Role": "Comparative Experiment",
+    "Accuracy": 0.1773,
+    "Top-3 Accuracy": 0.3227,
+    "Precision": 0.2372,
+    "Recall": 0.1773,
+    "F1 Score": 0.1708,
+    "Loss": 3.4166,
+    "Parameters": 16469,
+    "Latency (ms/sample)": 0.289,
+    "Training Time": "146.57s"
+  },
+  {
+    "Model": "LSTM",
+    "Role": "Comparative Experiment",
+    "Accuracy": 0.4752,
+    "Top-3 Accuracy": 0.7033,
+    "Precision": 0.5081,
+    "Recall": 0.4752,
+    "F1 Score": 0.4709,
+    "Loss": 1.9848,
+    "Parameters": 32501,
+    "Latency (ms/sample)": 1.206,
+    "Training Time": "348.57s"
+  }
+]

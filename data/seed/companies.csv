@@ -1,0 +1,31 @@
+company_id,company_name,company_country,company_city,company_industry,company_size,company_website
+1,Microsoft,United States,Redmond,Technology,100000+,https://careers.microsoft.com
+2,Google,United States,Mountain View,Technology,100000+,https://careers.google.com
+3,Amazon,United States,Seattle,Technology,100000+,https://amazon.jobs
+4,Apple,United States,Cupertino,Technology,100000+,https://jobs.apple.com
+5,Meta,United States,Menlo Park,Technology,100000+,https://careers.meta.com
+6,NVIDIA,United States,Santa Clara,Technology,10000-50000,https://nvidia.careers
+7,IBM,United States,Armonk,Technology,100000+,https://ibm.com/careers
+8,Oracle,United States,Austin,Technology,100000+,https://oracle.com/careers
+9,Adobe,United States,San Jose,Technology,10000-50000,https://adobe.com/careers
+10,Salesforce,United States,San Francisco,Technology,10000-50000,https://salesforce.com/company/careers
+11,Deloitte,United States,New York,Consulting,100000+,https://deloitte.com/careers
+12,Accenture,Ireland,Dublin,Consulting,100000+,https://accenture.com/careers
+13,Tata Consultancy Services,India,Mumbai,Technology,100000+,https://tcs.com/careers
+14,Infosys,India,Bangalore,Technology,100000+,https://infosys.com/careers
+15,Wipro,India,Bangalore,Technology,100000+,https://wipro.com/careers
+16,Capgemini,France,Paris,Consulting,100000+,https://capgemini.com/careers
+17,Cognizant,United States,Teaneck,Technology,100000+,https://cognizant.com/careers
+18,Walmart,United States,Bentonville,Retail,100000+,https://careers.walmart.com
+19,Uber,United States,San Francisco,Technology,10000-50000,https://uber.com/careers
+20,Airbnb,United States,San Francisco,Technology,5000-10000,https://airbnb.com/careers
+21,Netflix,United States,Los Gatos,Technology,5000-10000,https://jobs.netflix.com
+22,JPMorgan Chase,United States,New York,Finance,100000+,https://careers.jpmorgan.com
+23,Goldman Sachs,United States,New York,Finance,10000-50000,https://goldmansachs.com/careers
+24,Spotify,Sweden,Stockholm,Technology,5000-10000,https://lifeatspotify.com
+25,Twitter,United States,San Francisco,Technology,5000-10000,https://careers.twitter.com
+26,LinkedIn,United States,Sunnyvale,Technology,5000-10000,https://careers.linkedin.com
+27,Intel,United States,Santa Clara,Technology,100000+,https://intel.com/content/www/us/en/jobs/jobs-at-intel.html
+28,Cisco,United States,San Jose,Technology,10000-50000,https://jobs.cisco.com
+29,VMware,United States,Palo Alto,Technology,10000-50000,https://careers.vmware.com
+30,Atlassian,Australia,Sydney,Technology,5000-10000,https://atlassian.com/company/careers

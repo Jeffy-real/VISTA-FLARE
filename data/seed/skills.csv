@@ -1,0 +1,374 @@
+skill_id,skill_name,category
+1,.NET,Software Development
+2,A/B Testing,Quality Assurance
+3,ABAP,Database & Enterprise
+4,API Development,Software Engineering
+5,API Documentation,Core Competencies
+6,AR/VR,Core Competencies
+7,AWS,Cloud
+8,Accessibility,Core Competencies
+9,Active Directory,Core Competencies
+10,Adaptability,Core Competencies
+11,Adobe XD,Design
+12,Agile,Management
+13,Airflow,Data Engineering
+14,Algorithms,Software Engineering
+15,Amplitude,Core Competencies
+16,Analytics,Data & AI
+17,Angular,Web Development
+18,Ansible,DevOps
+19,Apex,Core Competencies
+20,Artificial Intelligence,Core Competencies
+21,Authentication,Core Competencies
+22,Authorization,Core Competencies
+23,Automation Testing,Quality Assurance
+24,Azure,Cloud
+25,Azure Functions,Cloud
+26,BPMN,Core Competencies
+27,Babel,Core Competencies
+28,Backup And Recovery,Core Competencies
+29,Bash,Core Competencies
+30,Batch Processing,Core Competencies
+31,Bayesian Statistics,Data & AI
+32,Big Data,Data & AI
+33,Bigquery,Core Competencies
+34,Blockchain,Data & AI
+35,Brand Design,Design & UX
+36,Budgeting,Core Competencies
+37,Build Automation,Design & UX
+38,Business Intelligence,Core Competencies
+39,Business Process Mapping,Core Competencies
+40,C,Programming
+41,C#,Programming
+42,C++,Programming
+43,CI/CD,DevOps
+44,CRM,Database & Enterprise
+45,CSS,Web Development
+46,CUDA,Core Competencies
+47,Caching,Core Competencies
+48,Calculus,Mathematics
+49,Cassandra,Data & Databases
+50,Causal Inference,Core Competencies
+51,Celery,Core Competencies
+52,Chai,Data & AI
+53,Change Management,Core Competencies
+54,Claude API,Core Competencies
+55,Clean Architecture,Core Competencies
+56,Cloud Architecture,Cloud & DevOps
+57,Cloud Run,Cloud
+58,Cloud Security,Cloud & DevOps
+59,Cloud Storage,Cloud
+60,Code Review,Core Competencies
+61,Color Theory,Design & UX
+62,Communication,Soft Skills
+63,Compiler Design,Design & UX
+64,Compliance,Core Competencies
+65,Computer Vision,AI & ML
+66,Concurrency,Core Competencies
+67,Configuration Management,Core Competencies
+68,Confluence,Tools
+69,Containerization,Data & AI
+70,Content Strategy,Product & Business
+71,Copywriting,Core Competencies
+72,Creativity,Core Competencies
+73,Critical Thinking,Core Competencies
+74,Cryptography,Security
+75,Customer Discovery,Core Competencies
+76,Customer Support,Core Competencies
+77,Cybersecurity,Security
+78,Cypress,Quality Assurance
+79,DAST,Cybersecurity
+80,DNS,Core Competencies
+81,Dart,Programming
+82,Dashboard Design,Design & UX
+83,Data Analysis,Data Science
+84,Data Catalogs,Data & AI
+85,Data Cleaning,Data & AI
+86,Data Ethics,Data & AI
+87,Data Governance,Software Development
+88,Data Lake,Data & AI
+89,Data Mesh,Data & AI
+90,Data Mining,Data Science
+91,Data Modeling,Data & AI
+92,Data Pipelines,Data & AI
+93,Data Privacy,Data & AI
+94,Data Quality,Data & AI
+95,Data Storytelling,Data & AI
+96,Data Structures,Software Engineering
+97,Data Warehousing,Data Engineering
+98,Databricks,Data Platforms
+99,Datadog,Data & AI
+100,Debugging,Software Engineering
+101,Deep Learning,AI & ML
+102,Delta Lake,Database & Enterprise
+103,Design Patterns,Design & UX
+104,Design Systems,Design & UX
+105,Design Thinking,Design & UX
+106,Diagramming,Core Competencies
+107,Digital Forensics,Security
+108,Disaster Recovery,Cybersecurity
+109,Distributed Systems,Core Competencies
+110,Django,Web Development
+111,Docker,DevOps
+112,Domain-driven Design,Data & AI
+113,Dynamic Analysis,Core Competencies
+114,EC2,Cloud
+115,ELT,Database & Enterprise
+116,ETL,Data Engineering
+117,Elasticsearch,Data & Databases
+118,Embedded Systems,Core Competencies
+119,Ethical Hacking,Security
+120,Event-driven Architecture,Core Competencies
+121,Excel,Data Analysis
+122,Experiment Design,Design & UX
+123,Experiment Tracking,Core Competencies
+124,Express,Web Development
+125,Fastapi,Software Development
+126,Feature Engineering,Data & AI
+127,Figma,Design
+128,Financial Modeling,Data & AI
+129,Firewalls,Cybersecurity
+130,Firmware,Core Competencies
+131,Flask,Web Development
+132,Forecasting,Data & AI
+133,Fraud Detection,Core Competencies
+134,Functional Programming,Core Competencies
+135,GDPR,Core Competencies
+136,GPU Computing,Core Competencies
+137,Game Development,Core Competencies
+138,Generative AI,AI & ML
+139,Git,Version Control
+140,GitHub Actions,DevOps
+141,Github,Core Competencies
+142,Gitlab,Core Competencies
+143,Go,Programming
+144,Google Analytics,Software Development
+145,Google Cloud,Cloud
+146,Grafana,Cloud & DevOps
+147,Graphql,Software Development
+148,HTML,Web Development
+149,Hadoop,Big Data
+150,High Availability,Data & AI
+151,Hubspot,Core Competencies
+152,Hugging Face,Data & AI
+153,IAM,Cloud & DevOps
+154,ISO 27001,Core Competencies
+155,IT Support,Core Competencies
+156,Identity And Access Management,Core Competencies
+157,Illustrator,Design
+158,Image Processing,Core Competencies
+159,Incident Management,Core Competencies
+160,Incident Response,Security
+161,Information Architecture,Core Competencies
+162,Information Retrieval,Core Competencies
+163,Infrastructure As Code,Core Competencies
+164,Integration Testing,Software Engineering
+165,Interaction Design,Design & UX
+166,Internationalization,Core Competencies
+167,JIRA,Tools
+168,JWT,Core Competencies
+169,Java,Programming
+170,Javascript,Software Development
+171,Jenkins,DevOps
+172,Jest,Testing Frameworks
+173,Journey Mapping,Core Competencies
+174,KPI Design,Design & UX
+175,Kafka,Big Data
+176,Kanban,Management
+177,Keras,AI & ML
+178,Kotlin,Programming
+179,Kubernetes,DevOps
+180,LLMs,AI & ML
+181,Lakehouse,Database & Enterprise
+182,Lambda,Cloud
+183,Langchain,Data & AI
+184,Laravel,Software Development
+185,Large Language Models,Data & AI
+186,Leadership,Soft Skills
+187,Lightgbm,Core Competencies
+188,Linear Algebra,Mathematics
+189,Linux,Operating Systems
+190,Load Balancing,Cloud & DevOps
+191,Localization,Core Competencies
+192,Logging,Core Competencies
+193,Looker,Data Visualization
+194,Machine Learning,AI & ML
+195,Malware Analysis,Cybersecurity
+196,Manual Testing,Quality Assurance
+197,Markdown,Core Competencies
+198,Market Research,Product & Business
+199,Master Data Management,Data & AI
+200,Matplotlib,Data Science
+201,Memory Management,Core Competencies
+202,Mentoring,Core Competencies
+203,Message Queues,Core Competencies
+204,Metadata Management,Data & AI
+205,Microservices,Software Architecture
+206,Mixpanel,Core Competencies
+207,Mlflow,Core Competencies
+208,Mlops,Core Competencies
+209,Mobile Development,Core Competencies
+210,Mocha,Quality Assurance
+211,Model Deployment,Data & AI
+212,Model Evaluation,Data & AI
+213,Model Monitoring,Data & AI
+214,Mongodb,Software Development
+215,Monitoring,Core Competencies
+216,Motion Design,Design & UX
+217,Multithreading,Core Competencies
+218,Mysql,Data & AI
+219,NIST,Core Competencies
+220,Natural Language Processing,Core Competencies
+221,Negotiation,Software Development
+222,Network Security,Security
+223,Networking,Core Competencies
+224,Next.js,Web Development
+225,Node.js,Web Development
+226,Nosql,Data & AI
+227,Numpy,Data & AI
+228,OAuth,Core Competencies
+229,OOP,Software Engineering
+230,OWASP,Security
+231,Objective-c,Core Competencies
+232,Observability,Core Competencies
+233,Okrs,Product & Business
+234,Openai API,Data & AI
+235,Openapi,Core Competencies
+236,Operations Research,Core Competencies
+237,Optimization,Core Competencies
+238,Oracle,Data & Databases
+239,Oracle ERP,Database & Enterprise
+240,PHP,Programming
+241,Package Management,Core Competencies
+242,Pandas,Data Science
+243,Penetration Testing,Security
+244,Performance Tuning,Core Competencies
+245,Persona Development,Core Competencies
+246,Photoshop,Design
+247,Playwright,Quality Assurance
+248,Plotly,Data Science
+249,Postgresql,Data & AI
+250,Postman,Core Competencies
+251,Power BI,Data Visualization
+252,Powershell,Core Competencies
+253,Presentation Skills,Core Competencies
+254,Probability,Mathematics
+255,Problem Solving,Soft Skills
+256,Process Modeling,Data & AI
+257,Product Strategy,Product & Business
+258,Project Management,Management
+259,Prometheus,Cloud & DevOps
+260,Prompt Engineering,Core Competencies
+261,Prototyping,Design
+262,Pytest,Testing Frameworks
+263,Python,Programming
+264,Pytorch,Data & AI
+265,Qualitative Research,Core Competencies
+266,Quality Assurance,Quality Assurance
+267,Quantitative Research,Core Competencies
+268,R,Programming
+269,RAG,Data & AI
+270,REST API,Web Development
+271,Rabbitmq,Core Competencies
+272,React,Web Development
+273,React Native,Software Development
+274,Recommendation Systems,Core Competencies
+275,Redis,Data & Databases
+276,Regular Expressions,Software Development
+277,Reinforcement Learning,AI & ML
+278,Release Management,Core Competencies
+279,Report Automation,Core Competencies
+280,Requirements Analysis,Design & UX
+281,Responsive Design,Design & UX
+282,Restful Services,Software Development
+283,Risk Analysis,Core Competencies
+284,Risk Management,Core Competencies
+285,Roadmapping,Product & Business
+286,Ruby,Programming
+287,Rust,Programming
+288,S3,Cloud
+289,SAP,Enterprise
+290,SAP S/4HANA,Database & Enterprise
+291,SAST,Cybersecurity
+292,SIEM,Security
+293,SOC,Security
+294,SOC 2,Cybersecurity
+295,SOLID,Core Competencies
+296,SQL,Data & Databases
+297,Salesforce,Enterprise
+298,Sass,Core Competencies
+299,Scala,Programming
+300,Scikit-learn,AI & ML
+301,Scipy,Data & AI
+302,Scripting,Core Competencies
+303,Scrum,Management
+304,Seaborn,Data Science
+305,Search,Core Competencies
+306,Secrets Management,Core Competencies
+307,Secure SDLC,Core Competencies
+308,Security Operations,Cybersecurity
+309,Selenium,Testing Frameworks
+310,Serverless,Cloud & DevOps
+311,Service Design,Design & UX
+312,Servicenow,Core Competencies
+313,Shell Scripting,Core Competencies
+314,Sketch,Design
+315,Smart Contracts,Core Competencies
+316,Snowflake,Data Platforms
+317,Solidity,Core Competencies
+318,Spark,Big Data
+319,Speech Recognition,Core Competencies
+320,Splunk,Core Competencies
+321,Spring,Software Development
+322,Stakeholder Management,Product & Business
+323,Static Analysis,Core Competencies
+324,Statistics,Mathematics
+325,Storybook,Core Competencies
+326,Stream Processing,Core Competencies
+327,Survey Design,Design & UX
+328,Swagger,Core Competencies
+329,Swift,Programming
+330,System Design,Software Architecture
+331,TCP/IP,Core Competencies
+332,Tableau,Data Visualization
+333,Tailwind CSS,Software Development
+334,Teamwork,Soft Skills
+335,Technical Documentation,Core Competencies
+336,Tensorflow,Data & AI
+337,Terraform,DevOps
+338,Testing,Software Engineering
+339,Threat Intelligence,Cybersecurity
+340,Threat Modeling,Data & AI
+341,Time Management,Core Competencies
+342,Time Series Analysis,Core Competencies
+343,Training,Data & AI
+344,Transformers,AI & ML
+345,Troubleshooting,Core Competencies
+346,Typescript,Software Development
+347,Typography,Design & UX
+348,UML,Core Competencies
+349,Unit Testing,Software Engineering
+350,Unity,Core Competencies
+351,Unreal Engine,Core Competencies
+352,Usability Testing,Quality Assurance
+353,User Research,Design
+354,VPC,Cloud & DevOps
+355,VPN,Core Competencies
+356,Vector Databases,Data & AI
+357,Video Editing,Core Competencies
+358,Visual Design,Design & UX
+359,Vite,Core Competencies
+360,Vitest,Quality Assurance
+361,Vue,Web Development
+362,Vulnerability Assessment,Cybersecurity
+363,WCAG,Core Competencies
+364,Web3,Core Competencies
+365,Webpack,Core Competencies
+366,Websockets,Cybersecurity
+367,Windows Server,Core Competencies
+368,Wireframing,Design
+369,Workday,Core Competencies
+370,Xgboost,Core Competencies
+371,Zero Trust,Software Development
+372,dbt,Data Engineering
+373,gRPC,Core Competencies

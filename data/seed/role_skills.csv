@@ -1,0 +1,509 @@
+role_id,role_name,skill_id,skill_name,importance,skill_level,required_or_preferred
+1,Data Analyst,1,Python,0.95,intermediate,required
+1,Data Analyst,17,SQL,0.95,advanced,required
+1,Data Analyst,25,Pandas,0.90,intermediate,required
+1,Data Analyst,26,NumPy,0.85,intermediate,required
+1,Data Analyst,33,Excel,0.80,advanced,required
+1,Data Analyst,31,Power BI,0.75,intermediate,preferred
+1,Data Analyst,32,Tableau,0.75,intermediate,preferred
+1,Data Analyst,93,Statistics,0.80,intermediate,required
+1,Data Analyst,105,Data Analysis,0.90,advanced,required
+1,Data Analyst,28,Matplotlib,0.70,beginner,preferred
+2,Senior Data Analyst,1,Python,0.95,advanced,required
+2,Senior Data Analyst,17,SQL,0.95,expert,required
+2,Senior Data Analyst,25,Pandas,0.90,advanced,required
+2,Senior Data Analyst,26,NumPy,0.90,advanced,required
+2,Senior Data Analyst,33,Excel,0.75,advanced,required
+2,Senior Data Analyst,31,Power BI,0.85,advanced,required
+2,Senior Data Analyst,32,Tableau,0.85,advanced,required
+2,Senior Data Analyst,93,Statistics,0.90,advanced,required
+2,Senior Data Analyst,105,Data Analysis,0.95,expert,required
+2,Senior Data Analyst,107,ETL,0.70,intermediate,preferred
+3,Business Intelligence Analyst,17,SQL,0.95,advanced,required
+3,Business Intelligence Analyst,31,Power BI,0.95,advanced,required
+3,Business Intelligence Analyst,32,Tableau,0.90,advanced,required
+3,Business Intelligence Analyst,33,Excel,0.85,advanced,required
+3,Business Intelligence Analyst,105,Data Analysis,0.85,intermediate,required
+3,Business Intelligence Analyst,108,Data Warehousing,0.75,intermediate,preferred
+3,Business Intelligence Analyst,25,Pandas,0.65,beginner,preferred
+3,Business Intelligence Analyst,1,Python,0.60,beginner,preferred
+4,Business Intelligence Developer,17,SQL,0.95,advanced,required
+4,Business Intelligence Developer,31,Power BI,0.95,advanced,required
+4,Business Intelligence Developer,32,Tableau,0.85,advanced,required
+4,Business Intelligence Developer,108,Data Warehousing,0.90,advanced,required
+4,Business Intelligence Developer,107,ETL,0.90,advanced,required
+4,Business Intelligence Developer,33,Excel,0.80,intermediate,required
+4,Business Intelligence Developer,114,Snowflake,0.75,intermediate,preferred
+4,Business Intelligence Developer,115,Databricks,0.70,intermediate,preferred
+5,Data Scientist,1,Python,0.95,advanced,required
+5,Data Scientist,35,Machine Learning,0.95,advanced,required
+5,Data Scientist,93,Statistics,0.90,advanced,required
+5,Data Scientist,25,Pandas,0.90,advanced,required
+5,Data Scientist,26,NumPy,0.90,advanced,required
+5,Data Scientist,17,SQL,0.85,intermediate,required
+5,Data Scientist,40,Scikit-learn,0.85,advanced,required
+5,Data Scientist,37,TensorFlow,0.70,intermediate,preferred
+5,Data Scientist,38,PyTorch,0.70,intermediate,preferred
+5,Data Scientist,105,Data Analysis,0.85,advanced,required
+6,Senior Data Scientist,1,Python,0.95,expert,required
+6,Senior Data Scientist,35,Machine Learning,0.95,expert,required
+6,Senior Data Scientist,36,Deep Learning,0.90,advanced,required
+6,Senior Data Scientist,93,Statistics,0.95,expert,required
+6,Senior Data Scientist,25,Pandas,0.90,expert,required
+6,Senior Data Scientist,26,NumPy,0.90,expert,required
+6,Senior Data Scientist,17,SQL,0.85,advanced,required
+6,Senior Data Scientist,40,Scikit-learn,0.90,expert,required
+6,Senior Data Scientist,37,TensorFlow,0.85,advanced,required
+6,Senior Data Scientist,38,PyTorch,0.85,advanced,required
+6,Senior Data Scientist,44,Computer Vision,0.70,intermediate,preferred
+6,Senior Data Scientist,43,NLP,0.70,intermediate,preferred
+7,Machine Learning Engineer,1,Python,0.95,advanced,required
+7,Machine Learning Engineer,35,Machine Learning,0.95,advanced,required
+7,Machine Learning Engineer,37,TensorFlow,0.85,advanced,required
+7,Machine Learning Engineer,38,PyTorch,0.85,advanced,required
+7,Machine Learning Engineer,39,Keras,0.80,advanced,required
+7,Machine Learning Engineer,59,Docker,0.85,intermediate,required
+7,Machine Learning Engineer,60,Kubernetes,0.75,intermediate,preferred
+7,Machine Learning Engineer,61,Jenkins,0.70,intermediate,preferred
+7,Machine Learning Engineer,62,GitHub Actions,0.70,intermediate,preferred
+7,Machine Learning Engineer,49,AWS,0.75,intermediate,preferred
+8,Senior Machine Learning Engineer,1,Python,0.95,expert,required
+8,Senior Machine Learning Engineer,35,Machine Learning,0.95,expert,required
+8,Senior Machine Learning Engineer,36,Deep Learning,0.95,expert,required
+8,Senior Machine Learning Engineer,37,TensorFlow,0.90,advanced,required
+8,Senior Machine Learning Engineer,38,PyTorch,0.90,advanced,required
+8,Senior Machine Learning Engineer,59,Docker,0.90,advanced,required
+8,Senior Machine Learning Engineer,60,Kubernetes,0.85,advanced,required
+8,Senior Machine Learning Engineer,49,AWS,0.85,advanced,required
+8,Senior Machine Learning Engineer,63,Terraform,0.75,intermediate,preferred
+9,AI Engineer,1,Python,0.95,advanced,required
+9,AI Engineer,35,Machine Learning,0.90,advanced,required
+9,AI Engineer,36,Deep Learning,0.90,advanced,required
+9,AI Engineer,45,Transformers,0.85,advanced,required
+9,AI Engineer,46,LLMs,0.85,advanced,required
+9,AI Engineer,47,Generative AI,0.80,advanced,required
+9,AI Engineer,37,TensorFlow,0.75,intermediate,preferred
+9,AI Engineer,38,PyTorch,0.80,advanced,required
+9,AI Engineer,59,Docker,0.75,intermediate,preferred
+10,Deep Learning Engineer,1,Python,0.95,expert,required
+10,Deep Learning Engineer,36,Deep Learning,0.95,expert,required
+10,Deep Learning Engineer,37,TensorFlow,0.90,advanced,required
+10,Deep Learning Engineer,38,PyTorch,0.90,advanced,required
+10,Deep Learning Engineer,39,Keras,0.85,advanced,required
+10,Deep Learning Engineer,94,Linear Algebra,0.85,advanced,required
+10,Deep Learning Engineer,95,Calculus,0.80,advanced,required
+10,Deep Learning Engineer,44,Computer Vision,0.75,intermediate,preferred
+10,Deep Learning Engineer,43,NLP,0.75,intermediate,preferred
+11,NLP Engineer,1,Python,0.95,advanced,required
+11,NLP Engineer,43,NLP,0.95,advanced,required
+11,NLP Engineer,45,Transformers,0.90,advanced,required
+11,NLP Engineer,46,LLMs,0.85,advanced,required
+11,NLP Engineer,38,PyTorch,0.85,advanced,required
+11,NLP Engineer,37,TensorFlow,0.75,intermediate,preferred
+11,NLP Engineer,35,Machine Learning,0.80,advanced,required
+12,Computer Vision Engineer,1,Python,0.95,advanced,required
+12,Computer Vision Engineer,44,Computer Vision,0.95,advanced,required
+12,Computer Vision Engineer,36,Deep Learning,0.90,advanced,required
+12,Computer Vision Engineer,38,PyTorch,0.85,advanced,required
+12,Computer Vision Engineer,37,TensorFlow,0.80,advanced,required
+12,Computer Vision Engineer,94,Linear Algebra,0.80,advanced,required
+13,MLOps Engineer,1,Python,0.90,advanced,required
+13,MLOps Engineer,35,Machine Learning,0.85,advanced,required
+13,MLOps Engineer,59,Docker,0.90,advanced,required
+13,MLOps Engineer,60,Kubernetes,0.90,advanced,required
+13,MLOps Engineer,62,GitHub Actions,0.85,advanced,required
+13,MLOps Engineer,65,CI/CD,0.85,advanced,required
+13,MLOps Engineer,63,Terraform,0.75,intermediate,preferred
+13,MLOps Engineer,49,AWS,0.80,advanced,required
+13,MLOps Engineer,112,Airflow,0.75,intermediate,preferred
+14,Data Engineer,1,Python,0.95,advanced,required
+14,Data Engineer,17,SQL,0.95,advanced,required
+14,Data Engineer,107,ETL,0.95,advanced,required
+14,Data Engineer,108,Data Warehousing,0.90,advanced,required
+14,Data Engineer,109,Spark,0.85,advanced,required
+14,Data Engineer,112,Airflow,0.80,advanced,required
+14,Data Engineer,59,Docker,0.80,intermediate,required
+14,Data Engineer,49,AWS,0.80,intermediate,preferred
+14,Data Engineer,114,Snowflake,0.75,intermediate,preferred
+15,Big Data Engineer,1,Python,0.90,advanced,required
+15,Big Data Engineer,109,Spark,0.95,advanced,required
+15,Big Data Engineer,110,Hadoop,0.85,advanced,required
+15,Big Data Engineer,111,Kafka,0.85,advanced,required
+15,Big Data Engineer,17,SQL,0.85,advanced,required
+15,Big Data Engineer,107,ETL,0.85,advanced,required
+15,Big Data Engineer,60,Kubernetes,0.75,intermediate,preferred
+15,Big Data Engineer,115,Databricks,0.80,advanced,required
+16,Analytics Engineer,1,Python,0.85,advanced,required
+16,Analytics Engineer,17,SQL,0.95,advanced,required
+16,Analytics Engineer,113,dbt,0.90,advanced,required
+16,Analytics Engineer,114,Snowflake,0.85,advanced,required
+16,Analytics Engineer,115,Databricks,0.80,intermediate,preferred
+16,Analytics Engineer,108,Data Warehousing,0.85,advanced,required
+16,Analytics Engineer,25,Pandas,0.75,intermediate,preferred
+17,Research Scientist,1,Python,0.90,advanced,required
+17,Research Scientist,93,Statistics,0.95,advanced,required
+17,Research Scientist,94,Linear Algebra,0.90,advanced,required
+17,Research Scientist,95,Calculus,0.85,advanced,required
+17,Research Scientist,26,NumPy,0.85,advanced,required
+17,Research Scientist,27,SciPy,0.85,advanced,required
+17,Research Scientist,35,Machine Learning,0.75,intermediate,preferred
+18,AI Research Scientist,1,Python,0.95,expert,required
+18,AI Research Scientist,36,Deep Learning,0.95,expert,required
+18,AI Research Scientist,35,Machine Learning,0.90,expert,required
+18,AI Research Scientist,38,PyTorch,0.90,advanced,required
+18,AI Research Scientist,93,Statistics,0.90,advanced,required
+18,AI Research Scientist,94,Linear Algebra,0.90,advanced,required
+18,AI Research Scientist,95,Calculus,0.85,advanced,required
+18,AI Research Scientist,45,Transformers,0.85,advanced,required
+19,Quantitative Analyst,1,Python,0.90,advanced,required
+19,Quantitative Analyst,14,R,0.90,advanced,required
+19,Quantitative Analyst,93,Statistics,0.95,expert,required
+19,Quantitative Analyst,96,Probability,0.95,advanced,required
+19,Quantitative Analyst,94,Linear Algebra,0.85,advanced,required
+19,Quantitative Analyst,26,NumPy,0.85,advanced,required
+19,Quantitative Analyst,27,SciPy,0.85,advanced,required
+19,Quantitative Analyst,35,Machine Learning,0.75,intermediate,preferred
+20,Data Architect,17,SQL,0.95,expert,required
+20,Data Architect,108,Data Warehousing,0.95,expert,required
+20,Data Architect,107,ETL,0.90,advanced,required
+20,Data Architect,135,Microservices,0.85,advanced,required
+20,Data Architect,136,System Design,0.90,advanced,required
+20,Data Architect,49,AWS,0.85,advanced,required
+20,Data Architect,50,Azure,0.80,intermediate,preferred
+20,Data Architect,51,Google Cloud,0.80,intermediate,preferred
+21,Software Engineer,1,Python,0.90,advanced,required
+21,Software Engineer,67,Git,0.95,advanced,required
+21,Software Engineer,138,Data Structures,0.90,advanced,required
+21,Software Engineer,139,Algorithms,0.90,advanced,required
+21,Software Engineer,137,OOP,0.90,advanced,required
+21,Software Engineer,128,Testing,0.85,intermediate,required
+21,Software Engineer,140,Debugging,0.85,advanced,required
+21,Software Engineer,66,Linux,0.75,intermediate,preferred
+22,Backend Developer,1,Python,0.90,advanced,required
+22,Backend Developer,76,Node.js,0.85,advanced,required
+22,Backend Developer,17,SQL,0.85,advanced,required
+22,Backend Developer,81,REST API,0.90,advanced,required
+22,Backend Developer,135,Microservices,0.80,intermediate,preferred
+22,Backend Developer,82,GraphQL,0.75,intermediate,preferred
+22,Backend Developer,59,Docker,0.80,intermediate,required
+23,Frontend Developer,3,JavaScript,0.95,advanced,required
+23,Frontend Developer,4,TypeScript,0.90,advanced,required
+23,Frontend Developer,70,HTML,0.95,advanced,required
+23,Frontend Developer,71,CSS,0.95,advanced,required
+23,Frontend Developer,72,React,0.90,advanced,required
+23,Frontend Developer,74,Vue,0.70,intermediate,preferred
+23,Frontend Developer,73,Angular,0.70,intermediate,preferred
+24,Full Stack Developer,1,Python,0.85,advanced,required
+24,Full Stack Developer,3,JavaScript,0.95,advanced,required
+24,Full Stack Developer,4,TypeScript,0.90,advanced,required
+24,Full Stack Developer,72,React,0.90,advanced,required
+24,Full Stack Developer,76,Node.js,0.85,advanced,required
+24,Full Stack Developer,17,SQL,0.85,intermediate,required
+24,Full Stack Developer,81,REST API,0.85,advanced,required
+24,Full Stack Developer,59,Docker,0.75,intermediate,preferred
+25,Python Developer,1,Python,0.95,expert,required
+25,Python Developer,78,Django,0.85,advanced,required
+25,Python Developer,79,Flask,0.85,advanced,required
+25,Python Developer,80,FastAPI,0.85,advanced,required
+25,Python Developer,17,SQL,0.80,intermediate,required
+25,Python Developer,25,Pandas,0.75,intermediate,preferred
+25,Python Developer,131,Pytest,0.80,advanced,required
+26,Java Developer,2,Java,0.95,expert,required
+26,Java Developer,30,C#,0.70,intermediate,preferred
+26,Java Developer,81,REST API,0.85,advanced,required
+26,Java Developer,135,Microservices,0.80,intermediate,preferred
+26,Java Developer,31,Spring,0.85,advanced,required
+26,Java Developer,59,Docker,0.75,intermediate,required
+27,JavaScript Developer,3,JavaScript,0.95,expert,required
+27,JavaScript Developer,4,TypeScript,0.85,advanced,required
+27,JavaScript Developer,72,React,0.85,advanced,required
+27,JavaScript Developer,76,Node.js,0.85,advanced,required
+27,JavaScript Developer,81,REST API,0.80,intermediate,required
+27,JavaScript Developer,132,Jest,0.80,advanced,required
+28,TypeScript Developer,4,TypeScript,0.95,expert,required
+28,TypeScript Developer,3,JavaScript,0.90,advanced,required
+28,TypeScript Developer,72,React,0.85,advanced,required
+28,TypeScript Developer,75,Next.js,0.85,advanced,required
+28,TypeScript Developer,76,Node.js,0.80,intermediate,required
+28,TypeScript Developer,132,Jest,0.80,advanced,required
+29,C++ Developer,5,C,0.85,advanced,required
+29,C++ Developer,6,C++,0.95,expert,required
+29,C++ Developer,138,Data Structures,0.90,advanced,required
+29,C++ Developer,139,Algorithms,0.90,advanced,required
+29,C++ Developer,94,Linear Algebra,0.75,intermediate,preferred
+29,C++ Developer,128,Testing,0.80,advanced,required
+30,C# Developer,7,C#,0.95,expert,required
+30,C# Developer,31,.NET,0.95,expert,required
+30,C# Developer,81,REST API,0.85,advanced,required
+30,C# Developer,59,Docker,0.75,intermediate,preferred
+30,C# Developer,135,Microservices,0.75,intermediate,preferred
+31,.NET Developer,7,C#,0.95,expert,required
+31,.NET Developer,31,.NET,0.95,expert,required
+31,.NET Developer,81,REST API,0.85,advanced,required
+31,.NET Developer,17,SQL,0.85,advanced,required
+31,.NET Developer,50,Azure,0.80,intermediate,preferred
+31,.NET Developer,59,Docker,0.75,intermediate,required
+32,PHP Developer,10,PHP,0.95,expert,required
+32,PHP Developer,17,SQL,0.85,advanced,required
+32,PHP Developer,81,REST API,0.80,intermediate,required
+32,PHP Developer,67,Git,0.85,advanced,required
+32,PHP Developer,78,Laravel,0.85,advanced,required
+33,Go Developer,8,Go,0.95,expert,required
+33,Go Developer,135,Microservices,0.90,advanced,required
+33,Go Developer,59,Docker,0.90,advanced,required
+33,Go Developer,60,Kubernetes,0.85,advanced,required
+33,Go Developer,81,REST API,0.85,advanced,required
+33,Go Developer,139,Algorithms,0.80,advanced,required
+34,Rust Developer,9,Rust,0.95,expert,required
+34,Rust Developer,139,Algorithms,0.90,advanced,required
+34,Rust Developer,138,Data Structures,0.90,advanced,required
+34,Rust Developer,136,System Design,0.75,intermediate,preferred
+34,Rust Developer,59,Docker,0.75,intermediate,preferred
+35,Mobile App Developer,12,Kotlin,0.85,advanced,required
+35,Mobile App Developer,13,Swift,0.85,advanced,required
+35,Mobile App Developer,3,JavaScript,0.80,intermediate,preferred
+35,Mobile App Developer,16,Dart,0.80,intermediate,preferred
+35,Mobile App Developer,72,React Native,0.75,intermediate,preferred
+36,Android Developer,12,Kotlin,0.95,expert,required
+36,Android Developer,2,Java,0.85,advanced,required
+36,Android Developer,128,Testing,0.80,advanced,required
+36,Android Developer,59,Docker,0.70,intermediate,preferred
+37,iOS Developer,13,Swift,0.95,expert,required
+37,iOS Developer,120,Figma,0.70,intermediate,preferred
+37,iOS Developer,128,Testing,0.80,advanced,required
+37,iOS Developer,6,Objective-C,0.75,intermediate,preferred
+38,React Developer,3,JavaScript,0.95,expert,required
+38,React Developer,4,TypeScript,0.90,advanced,required
+38,React Developer,72,React,0.95,expert,required
+38,React Developer,75,Next.js,0.85,advanced,required
+38,React Developer,132,Jest,0.80,advanced,required
+38,React Developer,70,HTML,0.85,advanced,required
+38,React Developer,71,CSS,0.85,advanced,required
+39,Node.js Developer,76,Node.js,0.95,expert,required
+39,Node.js Developer,3,JavaScript,0.95,expert,required
+39,Node.js Developer,4,TypeScript,0.85,advanced,required
+39,Node.js Developer,77,Express,0.90,advanced,required
+39,Node.js Developer,81,REST API,0.90,advanced,required
+39,Node.js Developer,82,GraphQL,0.75,intermediate,preferred
+40,API Developer,81,REST API,0.95,expert,required
+40,API Developer,82,GraphQL,0.85,advanced,required
+40,API Developer,76,Node.js,0.85,advanced,required
+40,API Developer,1,Python,0.85,advanced,required
+40,API Developer,135,Microservices,0.80,intermediate,preferred
+41,Cloud Engineer,49,AWS,0.90,advanced,required
+41,Cloud Engineer,50,Azure,0.80,intermediate,preferred
+41,Cloud Engineer,51,Google Cloud,0.80,intermediate,preferred
+41,Cloud Engineer,59,Docker,0.85,advanced,required
+41,Cloud Engineer,60,Kubernetes,0.85,advanced,required
+41,Cloud Engineer,63,Terraform,0.80,intermediate,required
+41,Cloud Engineer,136,System Design,0.75,intermediate,preferred
+42,Cloud Architect,49,AWS,0.95,expert,required
+42,Cloud Architect,50,Azure,0.85,advanced,required
+42,Cloud Architect,51,Google Cloud,0.85,advanced,required
+42,Cloud Architect,136,System Design,0.95,expert,required
+42,Cloud Architect,135,Microservices,0.90,advanced,required
+42,Cloud Architect,63,Terraform,0.85,advanced,required
+42,Cloud Architect,60,Kubernetes,0.85,advanced,required
+43,AWS Cloud Engineer,49,AWS,0.95,expert,required
+43,AWS Cloud Engineer,52,EC2,0.90,advanced,required
+43,AWS Cloud Engineer,53,S3,0.90,advanced,required
+43,AWS Cloud Engineer,54,Lambda,0.90,advanced,required
+43,AWS Cloud Engineer,59,Docker,0.85,advanced,required
+43,AWS Cloud Engineer,60,Kubernetes,0.80,intermediate,preferred
+43,AWS Cloud Engineer,63,Terraform,0.80,intermediate,required
+44,Azure Cloud Engineer,50,Azure,0.95,expert,required
+44,Azure Cloud Engineer,58,Azure Functions,0.90,advanced,required
+44,Azure Cloud Engineer,59,Docker,0.85,advanced,required
+44,Azure Cloud Engineer,60,Kubernetes,0.80,intermediate,preferred
+44,Azure Cloud Engineer,63,Terraform,0.75,intermediate,required
+45,Google Cloud Engineer,51,Google Cloud,0.95,expert,required
+45,Google Cloud Engineer,55,BigQuery,0.90,advanced,required
+45,Google Cloud Engineer,56,Cloud Run,0.85,advanced,required
+45,Google Cloud Engineer,59,Docker,0.85,advanced,required
+45,Google Cloud Engineer,60,Kubernetes,0.80,intermediate,preferred
+46,DevOps Engineer,59,Docker,0.95,expert,required
+46,DevOps Engineer,60,Kubernetes,0.90,advanced,required
+46,DevOps Engineer,65,CI/CD,0.95,expert,required
+46,DevOps Engineer,61,Jenkins,0.85,advanced,required
+46,DevOps Engineer,62,GitHub Actions,0.85,advanced,required
+46,DevOps Engineer,63,Terraform,0.80,intermediate,required
+46,DevOps Engineer,66,Linux,0.85,advanced,required
+47,Site Reliability Engineer,59,Docker,0.90,advanced,required
+47,Site Reliability Engineer,60,Kubernetes,0.90,advanced,required
+47,Site Reliability Engineer,66,Linux,0.95,expert,required
+47,Site Reliability Engineer,1,Python,0.85,advanced,required
+47,Site Reliability Engineer,65,CI/CD,0.85,advanced,required
+47,Site Reliability Engineer,136,System Design,0.80,intermediate,required
+48,Platform Engineer,59,Docker,0.90,advanced,required
+48,Platform Engineer,60,Kubernetes,0.90,advanced,required
+48,Platform Engineer,65,CI/CD,0.85,advanced,required
+48,Platform Engineer,63,Terraform,0.85,advanced,required
+48,Platform Engineer,136,System Design,0.85,advanced,required
+48,Platform Engineer,1,Python,0.80,intermediate,required
+49,Kubernetes Engineer,60,Kubernetes,0.95,expert,required
+49,Kubernetes Engineer,59,Docker,0.95,expert,required
+49,Kubernetes Engineer,66,Linux,0.85,advanced,required
+49,Kubernetes Engineer,136,System Design,0.80,intermediate,required
+49,Kubernetes Engineer,65,CI/CD,0.80,intermediate,required
+50,Infrastructure Engineer,66,Linux,0.95,expert,required
+50,Infrastructure Engineer,63,Terraform,0.90,advanced,required
+50,Infrastructure Engineer,64,Ansible,0.85,advanced,required
+50,Infrastructure Engineer,59,Docker,0.85,advanced,required
+50,Infrastructure Engineer,136,System Design,0.85,advanced,required
+51,Systems Engineer,66,Linux,0.90,advanced,required
+51,Systems Engineer,136,System Design,0.85,advanced,required
+51,Systems Engineer,65,CI/CD,0.80,intermediate,required
+51,Systems Engineer,67,Git,0.80,intermediate,required
+52,Network Engineer,84,Network Security,0.90,advanced,required
+52,Network Engineer,66,Linux,0.85,advanced,required
+52,Network Engineer,136,System Design,0.75,intermediate,required
+53,Network Administrator,84,Network Security,0.90,advanced,required
+53,Network Administrator,66,Linux,0.85,intermediate,required
+54,Cybersecurity Analyst,83,Cybersecurity,0.95,expert,required
+54,Cybersecurity Analyst,87,OWASP,0.85,advanced,required
+54,Cybersecurity Analyst,88,SIEM,0.90,advanced,required
+54,Cybersecurity Analyst,89,SOC,0.85,advanced,required
+54,Cybersecurity Analyst,66,Linux,0.80,intermediate,required
+55,Security Engineer,83,Cybersecurity,0.95,expert,required
+55,Security Engineer,84,Network Security,0.90,advanced,required
+55,Security Engineer,59,Docker,0.80,intermediate,required
+55,Security Engineer,60,Kubernetes,0.75,intermediate,preferred
+55,Security Engineer,1,Python,0.80,intermediate,required
+56,Security Architect,83,Cybersecurity,0.95,expert,required
+56,Security Architect,136,System Design,0.90,advanced,required
+56,Security Architect,84,Network Security,0.90,advanced,required
+56,Security Architect,92,Cryptography,0.85,advanced,required
+56,Security Architect,49,AWS,0.80,intermediate,preferred
+57,Penetration Tester,85,Ethical Hacking,0.95,expert,required
+57,Penetration Tester,86,Penetration Testing,0.95,expert,required
+57,Penetration Tester,87,OWASP,0.90,advanced,required
+57,Penetration Tester,1,Python,0.85,advanced,required
+57,Penetration Tester,66,Linux,0.85,advanced,required
+58,Ethical Hacker,85,Ethical Hacking,0.95,expert,required
+58,Ethical Hacker,86,Penetration Testing,0.90,advanced,required
+58,Ethical Hacker,87,OWASP,0.85,advanced,required
+58,Ethical Hacker,66,Linux,0.90,advanced,required
+58,Ethical Hacker,1,Python,0.80,intermediate,required
+59,SOC Analyst,83,Cybersecurity,0.90,advanced,required
+59,SOC Analyst,88,SIEM,0.95,expert,required
+59,SOC Analyst,89,SOC,0.95,expert,required
+59,SOC Analyst,90,Incident Response,0.85,advanced,required
+59,SOC Analyst,1,Python,0.75,intermediate,preferred
+60,Cloud Security Engineer,83,Cybersecurity,0.90,advanced,required
+60,Cloud Security Engineer,49,AWS,0.90,advanced,required
+60,Cloud Security Engineer,50,Azure,0.80,intermediate,preferred
+60,Cloud Security Engineer,59,Docker,0.85,advanced,required
+60,Cloud Security Engineer,60,Kubernetes,0.85,advanced,required
+61,Application Security Engineer,83,Cybersecurity,0.90,advanced,required
+61,Application Security Engineer,87,OWASP,0.95,expert,required
+61,Application Security Engineer,1,Python,0.85,advanced,required
+61,Application Security Engineer,3,JavaScript,0.80,intermediate,required
+61,Application Security Engineer,128,Testing,0.80,intermediate,required
+62,Incident Response Analyst,83,Cybersecurity,0.90,advanced,required
+62,Incident Response Analyst,90,Incident Response,0.95,expert,required
+62,Incident Response Analyst,91,Digital Forensics,0.85,advanced,required
+62,Incident Response Analyst,1,Python,0.75,intermediate,preferred
+63,Digital Forensics Analyst,83,Cybersecurity,0.85,advanced,required
+63,Digital Forensics Analyst,91,Digital Forensics,0.95,expert,required
+63,Digital Forensics Analyst,90,Incident Response,0.85,advanced,required
+63,Digital Forensics Analyst,66,Linux,0.80,intermediate,required
+64,Database Administrator,17,SQL,0.95,expert,required
+64,Database Administrator,18,PostgreSQL,0.90,advanced,required
+64,Database Administrator,19,MySQL,0.90,advanced,required
+64,Database Administrator,21,Oracle,0.85,advanced,required
+64,Database Administrator,22,Redis,0.80,intermediate,preferred
+64,Database Administrator,66,Linux,0.80,intermediate,required
+65,Database Developer,17,SQL,0.95,expert,required
+65,Database Developer,1,Python,0.85,advanced,required
+65,Database Developer,25,Pandas,0.75,intermediate,preferred
+65,Database Developer,108,Data Warehousing,0.80,intermediate,preferred
+66,SQL Developer,17,SQL,0.95,expert,required
+66,SQL Developer,18,PostgreSQL,0.90,advanced,required
+66,SQL Developer,19,MySQL,0.90,advanced,required
+66,SQL Developer,33,Excel,0.80,intermediate,preferred
+67,Data Warehouse Engineer,108,Data Warehousing,0.95,expert,required
+67,Data Warehouse Engineer,17,SQL,0.95,expert,required
+67,Data Warehouse Engineer,107,ETL,0.90,advanced,required
+67,Data Warehouse Engineer,114,Snowflake,0.85,advanced,required
+67,Data Warehouse Engineer,109,Spark,0.80,intermediate,preferred
+68,ETL Developer,107,ETL,0.95,expert,required
+68,ETL Developer,17,SQL,0.95,expert,required
+68,ETL Developer,1,Python,0.85,advanced,required
+68,ETL Developer,112,Airflow,0.85,advanced,required
+68,ETL Developer,114,Snowflake,0.80,intermediate,preferred
+69,Salesforce Developer,116,Salesforce,0.95,expert,required
+69,Salesforce Developer,81,REST API,0.80,intermediate,required
+69,Salesforce Developer,1,Python,0.70,beginner,preferred
+70,Salesforce Administrator,116,Salesforce,0.95,expert,required
+70,Salesforce Administrator,101,Project Management,0.70,intermediate,preferred
+71,SAP Consultant,117,SAP,0.95,expert,required
+71,SAP Consultant,17,SQL,0.85,advanced,required
+71,SAP Consultant,101,Project Management,0.75,intermediate,required
+72,ERP Consultant,117,SAP,0.90,advanced,required
+72,ERP Consultant,101,Project Management,0.85,advanced,required
+72,ERP Consultant,136,System Design,0.75,intermediate,preferred
+73,Product Manager,101,Project Management,0.90,advanced,required
+73,Product Manager,102,Agile,0.90,advanced,required
+73,Product Manager,103,Scrum,0.85,advanced,required
+73,Product Manager,97,Communication,0.90,advanced,required
+73,Product Manager,99,Problem Solving,0.85,advanced,required
+73,Product Manager,118,JIRA,0.80,intermediate,required
+74,Technical Product Manager,101,Project Management,0.90,advanced,required
+74,Technical Product Manager,102,Agile,0.90,advanced,required
+74,Technical Product Manager,1,Python,0.75,intermediate,preferred
+74,Technical Product Manager,81,REST API,0.80,intermediate,required
+74,Technical Product Manager,136,System Design,0.80,intermediate,required
+75,Project Manager,101,Project Management,0.95,expert,required
+75,Project Manager,102,Agile,0.90,advanced,required
+75,Project Manager,103,Scrum,0.90,advanced,required
+75,Project Manager,104,Kanban,0.85,advanced,required
+75,Project Manager,97,Communication,0.90,advanced,required
+75,Project Manager,100,Leadership,0.85,advanced,required
+76,Business Analyst,101,Project Management,0.85,advanced,required
+76,Business Analyst,105,Data Analysis,0.85,advanced,required
+76,Business Analyst,33,Excel,0.90,advanced,required
+76,Business Analyst,97,Communication,0.90,advanced,required
+76,Business Analyst,32,Tableau,0.75,intermediate,preferred
+77,Systems Analyst,136,System Design,0.90,advanced,required
+77,Systems Analyst,105,Data Analysis,0.85,advanced,required
+77,Systems Analyst,81,REST API,0.80,intermediate,required
+77,Systems Analyst,101,Project Management,0.80,intermediate,required
+78,Product Designer,120,Figma,0.95,expert,required
+78,Product Designer,121,Sketch,0.80,intermediate,preferred
+78,Product Designer,122,Adobe XD,0.80,intermediate,preferred
+78,Product Designer,125,User Research,0.90,advanced,required
+78,Product Designer,126,Wireframing,0.90,advanced,required
+78,Product Designer,127,Prototyping,0.90,advanced,required
+79,UX Designer,120,Figma,0.90,advanced,required
+79,UX Designer,125,User Research,0.95,expert,required
+79,UX Designer,126,Wireframing,0.95,expert,required
+79,UX Designer,127,Prototyping,0.90,advanced,required
+79,UX Designer,97,Communication,0.85,advanced,required
+80,UI Designer,120,Figma,0.95,expert,required
+80,UI Designer,71,CSS,0.85,advanced,required
+80,UI Designer,126,Wireframing,0.90,advanced,required
+80,UI Designer,127,Prototyping,0.85,advanced,required
+81,UX Researcher,125,User Research,0.95,expert,required
+81,UX Researcher,93,Statistics,0.80,intermediate,required
+81,UX Researcher,97,Communication,0.90,advanced,required
+81,UX Researcher,120,Figma,0.80,intermediate,preferred
+82,Technical Writer,97,Communication,0.95,expert,required
+82,Technical Writer,70,HTML,0.75,intermediate,preferred
+82,Technical Writer,81,REST API,0.70,intermediate,preferred
+82,Technical Writer,118,JIRA,0.75,intermediate,required
+82,Technical Writer,67,Git,0.70,intermediate,preferred
+83,Solutions Architect,136,System Design,0.95,expert,required
+83,Solutions Architect,49,AWS,0.90,advanced,required
+83,Solutions Architect,135,Microservices,0.90,advanced,required
+83,Solutions Architect,81,REST API,0.85,advanced,required
+83,Solutions Architect,1,Python,0.80,intermediate,preferred
+84,Technical Consultant,136,System Design,0.90,advanced,required
+84,Technical Consultant,97,Communication,0.90,advanced,required
+84,Technical Consultant,99,Problem Solving,0.90,advanced,required
+84,Technical Consultant,101,Project Management,0.80,intermediate,required
+84,Technical Consultant,1,Python,0.75,intermediate,preferred
+85,IT Consultant,101,Project Management,0.90,advanced,required
+85,IT Consultant,97,Communication,0.95,expert,required
+85,IT Consultant,99,Problem Solving,0.90,advanced,required
+85,IT Consultant,136,System Design,0.80,intermediate,required
+85,IT Consultant,49,AWS,0.70,intermediate,preferred
