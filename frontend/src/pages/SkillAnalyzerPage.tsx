@@ -121,7 +121,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
   return (
     <div className="max-w-5xl mx-auto space-y-8 py-2 animate-fade-in">
       {/* Title */}
-      <div className="text-center space-y-2">
+      <header className="text-center space-y-2">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
           Career Profile & Skills
         </h1>
@@ -129,16 +129,17 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
           Select the technologies you know and your experience level. Our Deep Learning ANN model
           will project your skill vector onto 85 career roles.
         </p>
-      </div>
+      </header>
 
       {/* Goal Mode Selection */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-        <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 block">
+           <span id="goal-label" className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 block">
           Step 1: Your Career Goal
         </span>
-        <div className="grid sm:grid-cols-3 gap-3">
+         <div className="grid sm:grid-cols-3 gap-3" role="group" aria-labelledby="goal-label">
           <button
             onClick={() => setGoalMode('exploring')}
+            aria-pressed={goalMode === 'exploring'}
             className={`p-3.5 rounded-xl border text-left transition-all flex items-start gap-3 ${
               goalMode === 'exploring'
                 ? 'border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20'
@@ -154,6 +155,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
 
           <button
             onClick={() => setGoalMode('target_role')}
+            aria-pressed={goalMode === 'target_role'}
             className={`p-3.5 rounded-xl border text-left transition-all flex items-start gap-3 ${
               goalMode === 'target_role'
                 ? 'border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20'
@@ -169,6 +171,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
 
           <button
             onClick={() => setGoalMode('target_company')}
+            aria-pressed={goalMode === 'target_company'}
             className={`p-3.5 rounded-xl border text-left transition-all flex items-start gap-3 ${
               goalMode === 'target_company'
                 ? 'border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20'
@@ -184,14 +187,14 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
         </div>
       </div>
 
-      {/* Quick Demo Presets */}
+      {/* Optional starter profiles */}
       <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-500 inline-flex items-center gap-1.5">
             <Wand2 className="w-3.5 h-3.5 text-indigo-500" />
-            Quick Demo Profiles (1-Click Fill)
+             Optional starter profiles
           </span>
-          <span className="text-xs text-slate-400">Great for viva demonstration</span>
+           <span className="text-xs text-slate-400">Choose one only if useful</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {PRESET_PROFILES.map((preset) => (
@@ -216,23 +219,25 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
           {/* Search bar */}
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
+             <input
               type="text"
               id="skill-search-input"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search skills (e.g. Python, SQL, React, AWS, Docker, Machine Learning)..."
+               placeholder="Search skills (e.g. Python, SQL, React, AWS, Docker, Machine Learning)..."
+               aria-label="Search available skills"
               className="w-full pl-10 pr-4 py-3 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
             />
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs" role="group" aria-label="Filter skills by category">
           {categories.slice(0, 10).map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
+               onClick={() => setSelectedCategory(cat)}
+               aria-pressed={selectedCategory === cat}
               className={`px-3 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${
                 selectedCategory === cat
                   ? 'bg-slate-900 text-white'
@@ -245,7 +250,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
         </div>
 
         {/* Filtered Available Skills Grid */}
-        <div className="max-h-48 overflow-y-auto pr-1">
+         <div className="max-h-48 overflow-y-auto pr-1" aria-live="polite">
           <div className="flex flex-wrap gap-2">
             {filteredSkills.slice(0, 36).map((skill) => (
               <button
@@ -258,7 +263,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
                 <span className="text-[10px] text-slate-400">({skill.category})</span>
               </button>
             ))}
-            {filteredSkills.length === 0 && (
+             {availableSkills.length === 0 ? <p className="text-xs text-slate-400 py-3 italic">Skill catalog is unavailable right now.</p> : filteredSkills.length === 0 && (
               <p className="text-xs text-slate-400 py-3 italic">
                 No matching skills found. Try searching for another term.
               </p>
@@ -298,7 +303,9 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
                         (lvl) => (
                           <button
                             key={lvl}
-                            onClick={() => updateLevel(skill.name, lvl)}
+                             onClick={() => updateLevel(skill.name, lvl)}
+                             aria-label={`${skill.name}: set ${lvl} proficiency`}
+                             aria-pressed={skill.level === lvl}
                             className={`px-1.5 py-0.5 rounded capitalize font-medium transition-colors ${
                               skill.level === lvl
                                 ? 'bg-primary-600 text-white shadow-xs'
@@ -312,7 +319,8 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
                     </div>
 
                     <button
-                      onClick={() => removeSkill(skill.name)}
+                       onClick={() => removeSkill(skill.name)}
+                       aria-label={`Remove ${skill.name}`}
                       className="p-1 hover:bg-slate-200 rounded text-slate-400 hover:text-slate-600"
                     >
                       <X className="w-3.5 h-3.5" />
@@ -329,6 +337,7 @@ export const SkillAnalyzerPage: React.FC<SkillAnalyzerPageProps> = ({
           <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             <span>{error}</span>
+            <button type="button" onClick={onAnalyze} className="ml-auto font-semibold underline" disabled={loading}>Retry</button>
           </div>
         )}
 

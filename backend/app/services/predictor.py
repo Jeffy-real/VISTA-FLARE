@@ -18,6 +18,8 @@ MODELS_DIR = PROJECT_ROOT / "models"
 class PredictionService:
     def __init__(self) -> None:
         self.model: Optional[Any] = None
+        self.model_type: Optional[str] = None
+        self.model_load_error: Optional[str] = None
         self.scaler: Optional[Any] = None
         self.skill_encoder: Optional[dict] = None
         self.label_encoder: Optional[dict] = None
@@ -65,9 +67,11 @@ class PredictionService:
 
                 self.model = keras.models.load_model(model_path)
                 self.model_type = "tensorflow"
-            except Exception:
+            except Exception as exc:
+                self.model_load_error = f"TensorFlow ANN unavailable: {exc.__class__.__name__}: {exc}"
                 self._load_sklearn_fallback(sklearn_path)
         else:
+            self.model_load_error = f"TensorFlow ANN artifact not found at {model_path}"
             self._load_sklearn_fallback(sklearn_path)
 
     def _load_sklearn_fallback(self, path: Path) -> None:
@@ -78,6 +82,7 @@ class PredictionService:
         else:
             self.model = None
             self.model_type = None
+            self.model_load_error = f"No fallback model artifact found at {path}"
 
     def _normalize_skill_name(self, name: str) -> str:
         if name is None:
@@ -162,6 +167,51 @@ class PredictionService:
 
         return vector
 
+    def normalized_skill_summary(self, skills: list[dict[str, Any]]) -> dict[str, int]:
+        """Return aggregate normalization metadata without retaining skill names."""
+        known = set((self.skill_encoder or {}).get("skill_to_index", {}))
+        normalized = []
+        for item in skills:
+            name = item if isinstance(item, str) else item.get("name", "")
+            canonical = self._canonicalize_skill(str(name))
+            if canonical:
+                normalized.append(canonical)
+        return {
+            "submitted": len(skills),
+            "normalized": len(normalized),
+            "recognized": sum(value in known for value in normalized),
+        }
+
+    def prepare_features(self, skills: list[dict[str, Any]]) -> np.ndarray:
+        X = self.encode_profile(skills).reshape(1, -1)
+        if self.scaler:
+            X = self.scaler.transform(X)
+        return X
+
+    def predict_features(self, X: np.ndarray, top_k: int = 3) -> tuple[list[dict[str, Any]], int]:
+        """Run one model inference from an already encoded feature vector."""
+        if self.model is None:
+            raise RuntimeError("Model not loaded")
+        if self.model_type == "tensorflow":
+            probabilities = self.model.predict(X, verbose=0)[0]
+        elif hasattr(self.model, "predict_proba"):
+            probabilities = self.model.predict_proba(X)[0]
+        else:
+            raise RuntimeError("Active model cannot produce probability scores")
+
+        if not np.isfinite(probabilities).all():
+            raise RuntimeError("Model returned invalid scores")
+        top_indices = np.argsort(probabilities)[-top_k:][::-1]
+        role_names = (self.label_encoder or {}).get("roles", [])
+        recommendations = []
+        for rank, idx in enumerate(top_indices, start=1):
+            recommendations.append({
+                "rank": rank,
+                "role": role_names[idx] if idx < len(role_names) else f"Role {idx}",
+                "score": round(float(probabilities[idx]), 6),
+            })
+        return recommendations, int(len(probabilities))
+
     def predict(self, skills: list[dict[str, Any]], top_k: int = 3) -> list[dict[str, Any]]:
         if self.model is None:
             raise RuntimeError("Model not loaded")
@@ -169,45 +219,34 @@ class PredictionService:
         if not skills:
             raise ValueError("Skills list cannot be empty")
 
-        X = self.encode_profile(skills).reshape(1, -1)
+        return self.predict_features(self.prepare_features(skills), top_k)[0]
 
-        if self.scaler:
-            X = self.scaler.transform(X)
-
-        if self.model_type == "tensorflow":
-            probabilities = self.model.predict(X, verbose=0)[0]
-        else:
-            # Scikit-learn fallback
-            if hasattr(self.model, "predict_proba"):
-                probabilities = self.model.predict_proba(X)[0]
-            else:
-                probabilities = np.zeros(len(self.label_encoder["roles"]))
-
-        # Get top-k indices
-        top_indices = np.argsort(probabilities)[-top_k:][::-1]
+    def score_for_role(self, skills: list[dict[str, Any]], role: str) -> Optional[float]:
+        """Return the classifier score for one known role without truncating to top-k."""
+        if self.model is None or not self.label_encoder:
+            return None
 
         role_names = self.label_encoder.get("roles", [])
+        try:
+            role_index = next(i for i, name in enumerate(role_names) if name.lower() == role.lower())
+        except StopIteration:
+            return None
 
-        recommendations = []
-        for rank, idx in enumerate(top_indices, start=1):
-            if idx < len(role_names):
-                role_name = role_names[idx]
-            else:
-                role_name = f"Role {idx}"
-            score = float(probabilities[idx])
-            recommendations.append(
-                {
-                    "rank": rank,
-                    "role": role_name,
-                    "score": round(score, 4),
-                }
-            )
-
-        return recommendations
+        X = self.encode_profile(skills).reshape(1, -1)
+        if self.scaler:
+            X = self.scaler.transform(X)
+        if self.model_type == "tensorflow":
+            probabilities = self.model.predict(X, verbose=0)[0]
+        elif hasattr(self.model, "predict_proba"):
+            probabilities = self.model.predict_proba(X)[0]
+        else:
+            return None
+        return round(float(probabilities[role_index]), 6)
 
     def get_model_info(self) -> dict[str, Any]:
         return {
             "model_type": self.model_type or "not_loaded",
+            "model_load_error": self.model_load_error,
             "num_skills": len(self.skill_encoder.get("skills", [])) if self.skill_encoder else 0,
             "num_roles": len(self.label_encoder.get("roles", [])) if self.label_encoder else 0,
         }

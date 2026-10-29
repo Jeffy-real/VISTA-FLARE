@@ -34,7 +34,10 @@ def analyze_skill_gap(
 
     # 1. Fetch role
     role = db.query(Role).filter(Role.name.ilike(target_role)).first()
-    category = role.category if role else "General Tech"
+    if not role:
+        raise ValueError(f"Target role not found: {target_role}")
+    target_role = role.name
+    category = role.category
 
     # 2. Fetch role required skills
     role_skills = db.query(RoleSkill).filter(RoleSkill.role_name.ilike(target_role)).all()
@@ -108,12 +111,12 @@ def analyze_skill_gap(
 
     # 3. Find learning resources for missing and developing skills
     gap_skills = [s.skill for s in missing_skills] + [s.skill for s in developing_skills]
-    resources = (
-        db.query(LearningResource)
-        .filter(LearningResource.skill.in_(gap_skills))
-        .limit(12)
-        .all()
-    )
+    gap_keys = {predictor._canonicalize_skill(skill).lower() for skill in gap_skills}
+    resources = [
+        resource
+        for resource in db.query(LearningResource).all()
+        if predictor._canonicalize_skill(resource.skill).lower() in gap_keys
+    ][:12]
     # Fallback to general resources if specific ones aren't populated
     if not resources:
         resources = db.query(LearningResource).limit(6).all()
@@ -153,9 +156,9 @@ def analyze_skill_gap(
                     comp_skills.add(predictor._canonicalize_skill(s))
 
         matched = list(user_skill_set.intersection(comp_skills))
-        comp_score = round(len(matched) / max(len(comp_skills), 1), 2)
-        if comp_score == 0.0 and relevant_jobs:
-            comp_score = 0.55  # baseline industry alignment
+        if not relevant_jobs or not comp_skills:
+            continue
+        comp_score = round(len(matched) / len(comp_skills), 2)
 
         company_matches.append(
             CompanyMatch(
@@ -163,7 +166,7 @@ def analyze_skill_gap(
                 company_name=c.name,
                 industry=c.industry,
                 location=f"{c.city}, {c.country}",
-                match_score=min(1.0, max(0.40, comp_score)),
+                match_score=min(1.0, comp_score),
                 matched_skills=matched[:4],
                 open_jobs_count=len(relevant_jobs) or len(open_jobs),
             )

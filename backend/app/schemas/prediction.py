@@ -25,6 +25,8 @@ class PredictionResponse(BaseModel):
     model: str
     model_version: str
     recommendations: List[CareerRecommendation]
+    trace_id: Optional[str] = None
+    trace_access_token: Optional[str] = None
 
 
 class SkillMatch(BaseModel):
@@ -147,6 +149,8 @@ class HealthResponse(BaseModel):
     status: str
     app_name: str
     model_loaded: bool
+    model_type: Optional[str] = None
+    model_load_error: Optional[str] = None
     database_connected: bool
 
 

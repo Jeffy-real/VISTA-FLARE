@@ -27,23 +27,21 @@ export const DeepLearningLabPage: React.FC = () => {
   const [arch, setArch] = useState<any | null>(null);
   const [cmData, setCmData] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadData();
-  }, [activeModel]);
-
-  const loadData = async () => {
+  const loadData = async (model: 'comparison' | 'ann' | 'cnn' | 'lstm') => {
     setLoading(true);
+    setError(null);
     try {
-      if (activeModel === 'comparison') {
+      if (model === 'comparison') {
         const compData = await api.getModelComparison();
         setComparison(compData);
       } else {
         const [m, h, a, cm] = await Promise.all([
-          api.getModelMetrics(activeModel),
-          api.getModelHistory(activeModel),
-          api.getModelArchitecture(activeModel),
-          api.getConfusionMatrix(activeModel),
+          api.getModelMetrics(model),
+          api.getModelHistory(model),
+          api.getModelArchitecture(model),
+          api.getConfusionMatrix(model),
         ]);
         setMetrics(m);
         setHistory(h);
@@ -52,10 +50,15 @@ export const DeepLearningLabPage: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to load lab data:', err);
+      setError('Lab artifacts could not be loaded. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    void loadData(activeModel);
+  }, [activeModel]);
 
   const chartHistoryData = history?.epochs.map((ep, i) => ({
     epoch: ep,
@@ -66,7 +69,7 @@ export const DeepLearningLabPage: React.FC = () => {
   })) || [];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 py-2 animate-fade-in">
+    <main className="page-shell max-w-6xl mx-auto space-y-8 py-2 animate-fade-in">
       {/* Header */}
       <div className="space-y-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-semibold">
@@ -76,16 +79,18 @@ export const DeepLearningLabPage: React.FC = () => {
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
           Deep Learning Lab
         </h1>
-        <p className="text-slate-600 text-sm max-w-2xl">
-          Complete academic inspection of trained Deep Learning models. View authentic training
-          histories, confusion matrices, comparative loss/accuracy curves, and architectural details.
-        </p>
+         <p className="text-slate-600 text-sm max-w-2xl">
+           Inspect available model reports, training histories, confusion matrices, comparative curves,
+           and architectural details. Report values describe the available artifacts and may not reflect a live retraining run.
+         </p>
+         <p className="provenance-note">Provenance: bundled evaluation report artifacts. These values are not a live retraining run.</p>
       </div>
 
       {/* Model Navigation Tabs */}
-      <div className="flex border-b border-slate-200 gap-2 text-sm font-semibold">
+      <div className="tab-list border-b border-slate-200 text-sm font-semibold" role="tablist" aria-label="Model evaluation views">
         <button
-          onClick={() => setActiveModel('comparison')}
+           onClick={() => setActiveModel('comparison')}
+           role="tab" aria-selected={activeModel === 'comparison'}
           className={`pb-3 px-4 border-b-2 transition-colors ${
             activeModel === 'comparison'
               ? 'border-indigo-600 text-indigo-600'
@@ -96,7 +101,8 @@ export const DeepLearningLabPage: React.FC = () => {
         </button>
 
         <button
-          onClick={() => setActiveModel('ann')}
+           onClick={() => setActiveModel('ann')}
+           role="tab" aria-selected={activeModel === 'ann'}
           className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-1.5 ${
             activeModel === 'ann'
               ? 'border-indigo-600 text-indigo-600'
@@ -108,7 +114,8 @@ export const DeepLearningLabPage: React.FC = () => {
         </button>
 
         <button
-          onClick={() => setActiveModel('cnn')}
+           onClick={() => setActiveModel('cnn')}
+           role="tab" aria-selected={activeModel === 'cnn'}
           className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-1.5 ${
             activeModel === 'cnn'
               ? 'border-indigo-600 text-indigo-600'
@@ -120,7 +127,8 @@ export const DeepLearningLabPage: React.FC = () => {
         </button>
 
         <button
-          onClick={() => setActiveModel('lstm')}
+           onClick={() => setActiveModel('lstm')}
+           role="tab" aria-selected={activeModel === 'lstm'}
           className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-1.5 ${
             activeModel === 'lstm'
               ? 'border-indigo-600 text-indigo-600'
@@ -138,6 +146,11 @@ export const DeepLearningLabPage: React.FC = () => {
           <span className="text-xs">Loading authentic model evaluation artifacts...</span>
         </div>
       )}
+      {error && !loading && (
+        <div role="alert" className="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-center justify-between gap-4 text-sm text-rose-800">
+          <span>{error}</span><button type="button" onClick={() => void loadData(activeModel)} className="font-semibold underline">Retry</button>
+        </div>
+      )}
 
       {/* VIEW 1: COMPARISON */}
       {!loading && activeModel === 'comparison' && (
@@ -150,15 +163,15 @@ export const DeepLearningLabPage: React.FC = () => {
                   Empirical Deep Learning Comparison
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Evaluated on identical stratified test set (3,300 samples across 85 career roles).
+                   Comparison values reported by the available model artifact.
                 </p>
               </div>
               <span className="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full">
-                All Actual Runs
+                   Available Report Artifacts
               </span>
             </div>
 
-            <div className="overflow-x-auto">
+             {comparison.length === 0 ? <div className="state-panel m-4"><p className="text-sm text-slate-500">No comparison artifacts are available.</p></div> : <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-slate-50 text-slate-500 uppercase font-semibold text-[11px] border-b border-slate-100">
                   <tr>
@@ -211,7 +224,7 @@ export const DeepLearningLabPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+             </div>}
           </div>
 
           {/* Academic Discussion Notes */}
@@ -225,7 +238,7 @@ export const DeepLearningLabPage: React.FC = () => {
                 Skill profiles are sparse binary/continuous feature vectors without spatial or
                 temporal ordering. Fully connected Dense layers allow direct weight learning across
                 arbitrary non-local skill co-occurrences (e.g. Python + Statistics + SQL), yielding
-                superior Top-1 (68.3%) and Top-3 (85.7%) accuracy.
+                 performance on the reported evaluation set.
               </p>
             </div>
 
@@ -237,8 +250,8 @@ export const DeepLearningLabPage: React.FC = () => {
               <p className="text-xs text-slate-600 leading-relaxed">
                 1D CNN slides convolution filters over adjacent indices. Because tabular skills lack
                 natural spatial proximity (adjacent array indices are arbitrary), local receptive
-                fields struggle to capture global skill interactions, achieving lower accuracy
-                (~17.7%), demonstrating why CNNs are unsuited for unordered tabular vectors.
+                 fields struggle to capture global skill interactions, achieving lower reported accuracy
+                 and illustrating the trade-offs of CNNs for unordered tabular vectors.
               </p>
             </div>
 
@@ -290,7 +303,7 @@ export const DeepLearningLabPage: React.FC = () => {
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
               <span className="text-xs text-slate-500 font-semibold block">Total Parameters</span>
               <p className="text-3xl font-extrabold text-purple-600 mt-1">
-                {metrics.total_parameters ? metrics.total_parameters.toLocaleString() : '62,061'}
+                 {metrics.total_parameters ? metrics.total_parameters.toLocaleString() : 'N/A'}
               </p>
               <span className="text-[11px] text-slate-400 mt-1 block">Trained weights & biases</span>
             </div>
@@ -442,7 +455,7 @@ export const DeepLearningLabPage: React.FC = () => {
                   <div className="flex justify-between py-1.5 border-b border-slate-100">
                     <span className="text-slate-500">Dataset Split:</span>
                     <span className="font-semibold text-slate-800">
-                      70% Train (15,400) / 15% Val (3,300) / 15% Test (3,300)
+                       Report-defined train / validation / test split
                     </span>
                   </div>
                 </div>
@@ -459,7 +472,7 @@ export const DeepLearningLabPage: React.FC = () => {
                     Evaluation Artifacts & Confusion Matrices
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Generated heatmaps showing role classification distributions across 85 classes.
+                     Available report images showing role classification distributions across 85 classes.
                   </p>
                 </div>
                 <span className="text-xs font-semibold px-2 py-1 bg-slate-100 rounded text-slate-600">
@@ -498,6 +511,6 @@ export const DeepLearningLabPage: React.FC = () => {
           )}
         </div>
       )}
-    </div>
+    </main>
   );
 };

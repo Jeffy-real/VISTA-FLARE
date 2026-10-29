@@ -7,6 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        ink: '#172033',
+        canvas: '#f6f8fb',
+        panel: '#ffffff',
+        line: '#dce3ed',
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -31,6 +35,12 @@ export default {
           800: '#86198f',
           900: '#701a75',
         },
+      },
+      boxShadow: {
+        panel: '0 1px 2px rgb(23 32 51 / 0.04), 0 8px 24px rgb(23 32 51 / 0.05)',
+      },
+      borderRadius: {
+        panel: '1rem',
       },
     },
   },

@@ -3,6 +3,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from backend.app.main import app
+from backend.app.services.predictor import get_prediction_service
 
 client = TestClient(app)
 
@@ -21,7 +22,8 @@ def test_api_health_endpoint():
     response = client.get("/api/health")
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "healthy"
+    expected_status = "healthy" if get_prediction_service().model_type == "tensorflow" else "degraded"
+    assert data["status"] == expected_status
     assert data["model_loaded"] is True
     assert data["database_connected"] is True
 
@@ -38,7 +40,7 @@ def test_predict_endpoint_success():
     response = client.post("/api/predict", json=payload)
     assert response.status_code == 200
     data = response.json()
-    assert data["model"] == "tensorflow"
+    assert data["model"] == get_prediction_service().model_type
     assert data["model_version"] == "ANN-v1"
     recs = data["recommendations"]
     assert len(recs) == 3
@@ -74,6 +76,14 @@ def test_analyze_skills_endpoint():
     assert "company_matches" in data
     assert "roadmap" in data
     assert len(data["roadmap"]) == 5  # 5-stage personalized roadmap
+
+
+def test_analyze_skills_rejects_unknown_role():
+    response = client.post(
+        "/api/analyze-skills",
+        json={"target_role": "Not A Real Role", "skills": [{"name": "Python"}]},
+    )
+    assert response.status_code == 404
 
 
 def test_model_metrics_endpoint():

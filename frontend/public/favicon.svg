@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#0f172a"/>
+  <path d="M16 4L18.2 12.8L27 15L18.2 17.2L16 26L13.8 17.2L5 15L13.8 12.8L16 4Z" fill="url(#flare-grad)"/>
+  <circle cx="16" cy="15" r="2.5" fill="#ffffff"/>
+  <defs>
+    <linearGradient id="flare-grad" x1="5" y1="4" x2="27" y2="26" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="0.5" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+  </defs>
+</svg>
+

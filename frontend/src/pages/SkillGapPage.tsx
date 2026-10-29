@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Compass,
   CheckCircle2,
@@ -9,6 +9,8 @@ import {
   Loader2,
 } from 'lucide-react';
 import { api } from '../api/client';
+import { RoadmapProgress } from '../components/RoadmapProgress';
+import { useAuth } from '../auth/AuthContext';
 import {
   SelectedSkill,
   SkillAnalysisResponse,
@@ -30,28 +32,40 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
   onSelectRole,
   onExploreJobs,
 }) => {
+  const { user } = useAuth();
   const [currentRole, setCurrentRole] = useState(initialRole || 'Data Scientist');
   const [analysis, setAnalysis] = useState<SkillAnalysisResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'gap' | 'roadmap' | 'learning' | 'companies'>('gap');
+  const [error, setError] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<string | null>(null);
+  const requestId = useRef(0);
 
-  useEffect(() => {
-    if (currentRole) {
-      loadAnalysis(currentRole);
-    }
-  }, [currentRole, selectedSkills]);
-
-  const loadAnalysis = async (roleName: string) => {
+  const loadAnalysis = async (roleName: string, skills: SelectedSkill[]) => {
+    const requestRole = roleName;
+    const requestSkills = JSON.stringify(skills);
+    const id = ++requestId.current;
     setLoading(true);
+    setError(null);
     try {
-      const data = await api.analyzeSkills(roleName, selectedSkills);
+      const data = await api.analyzeSkills(roleName, skills);
+      if (id !== requestId.current || requestRole !== currentRole || requestSkills !== JSON.stringify(skills)) return;
       setAnalysis(data);
     } catch (err) {
-      console.error('Failed to load skill analysis:', err);
+      if (id === requestId.current && requestRole === currentRole && requestSkills === JSON.stringify(skills)) {
+        setError(err instanceof Error ? err.message : 'Skill analysis failed.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (currentRole) {
+      void loadAnalysis(currentRole, selectedSkills);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRole, selectedSkills]);
 
   const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const roleName = e.target.value;
@@ -59,8 +73,19 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
     onSelectRole(roleName);
   };
 
+  const saveRoadmap = async () => {
+    if (!analysis || !user) return;
+    setSaveStatus('Saving roadmap…');
+    try {
+      await api.createRoadmap(currentRole, JSON.stringify(analysis.roadmap));
+      setSaveStatus('Roadmap saved to your account.');
+    } catch (err) {
+      setSaveStatus(err instanceof Error ? err.message : 'Roadmap could not be saved.');
+    }
+  };
+
   return (
-    <div className="max-w-5xl mx-auto space-y-6 py-2 animate-fade-in">
+    <main className="page-shell max-w-5xl mx-auto space-y-6 py-2 animate-fade-in">
       {/* Top Bar with Role Switcher */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
@@ -68,9 +93,10 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
             {analysis?.role_category || 'Technology'}
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">{currentRole}</h1>
-          <p className="text-xs text-slate-500">
-            Comprehensive skill gap analysis, personalized roadmap, and market matching.
-          </p>
+           <p className="text-xs text-slate-500">
+             Comprehensive skill gap analysis, personalized roadmap, and market matching.
+           </p>
+           <p className="provenance-note mt-2">Analysis is generated from your selected skills and the catalogued role requirements. Results can change as source data changes.</p>
         </div>
 
         {/* Change Role Selector */}
@@ -100,11 +126,15 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
               </span>
               <p className="text-2xl font-extrabold text-indigo-600 mt-1">
                 {analysis.ai_match_score !== null && analysis.ai_match_score !== undefined
-                  ? `${Math.round(analysis.ai_match_score * 100)}%`
-                  : 'Predicting...'}
+                  ? analysis.ai_match_score >= 0.995
+                    ? '99.9%+'
+                    : analysis.ai_match_score >= 0.01
+                      ? `${(analysis.ai_match_score * 100).toFixed(1)}%`
+                      : '<0.1%'
+                  : 'Evaluating...'}
               </p>
               <span className="text-[11px] text-slate-400">
-                Softmax probability from trained ANN classifier
+                Single-class Softmax probability across 85 roles
               </span>
             </div>
             <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
@@ -132,9 +162,10 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
       )}
 
       {/* Tab Navigation */}
-      <div className="flex border-b border-slate-200 space-x-2 text-sm font-semibold">
+       <div className="tab-list border-b border-slate-200 text-sm font-semibold" role="tablist" aria-label="Skill analysis views">
         <button
-          onClick={() => setActiveTab('gap')}
+           onClick={() => setActiveTab('gap')}
+           role="tab" aria-selected={activeTab === 'gap'}
           className={`pb-3 px-3 transition-colors border-b-2 ${
             activeTab === 'gap'
               ? 'border-primary-600 text-primary-600'
@@ -145,7 +176,8 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
         </button>
 
         <button
-          onClick={() => setActiveTab('roadmap')}
+           onClick={() => setActiveTab('roadmap')}
+           role="tab" aria-selected={activeTab === 'roadmap'}
           className={`pb-3 px-3 transition-colors border-b-2 ${
             activeTab === 'roadmap'
               ? 'border-primary-600 text-primary-600'
@@ -156,18 +188,20 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
         </button>
 
         <button
-          onClick={() => setActiveTab('learning')}
+           onClick={() => setActiveTab('learning')}
+           role="tab" aria-selected={activeTab === 'learning'}
           className={`pb-3 px-3 transition-colors border-b-2 ${
             activeTab === 'learning'
               ? 'border-primary-600 text-primary-600'
               : 'border-transparent text-slate-500 hover:text-slate-800'
           }`}
         >
-          Verified Learning Resources ({analysis?.learning_resources.length || 0})
+           Learning Resources ({analysis?.learning_resources.length || 0})
         </button>
 
         <button
-          onClick={() => setActiveTab('companies')}
+           onClick={() => setActiveTab('companies')}
+           role="tab" aria-selected={activeTab === 'companies'}
           className={`pb-3 px-3 transition-colors border-b-2 ${
             activeTab === 'companies'
               ? 'border-primary-600 text-primary-600'
@@ -182,6 +216,13 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
         <div className="py-12 flex flex-col items-center justify-center text-slate-400 space-y-2">
           <Loader2 className="w-6 h-6 animate-spin text-primary-500" />
           <span className="text-xs">Analyzing skill gaps and generating roadmap...</span>
+        </div>
+      )}
+
+      {!loading && error && (
+        <div role="alert" className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 flex items-center justify-between">
+          <span>{error}</span>
+          <button type="button" onClick={() => void loadAnalysis(currentRole, selectedSkills)} className="font-semibold underline">Retry</button>
         </div>
       )}
 
@@ -302,9 +343,10 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
                   developing skills.
                 </span>
                 <span className="font-bold text-slate-900 whitespace-nowrap">
-                  Estimated Timeline: ~18 Weeks
                 </span>
+                {user && <button type="button" onClick={() => void saveRoadmap()} className="rounded-lg bg-indigo-600 px-3 py-2 text-xs font-semibold text-white">Save to account</button>}
               </div>
+              {saveStatus && <p role="status" className="text-xs text-slate-600">{saveStatus}</p>}
 
               <div className="space-y-4">
                 {analysis.roadmap.map((stage) => (
@@ -355,16 +397,16 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
                   </div>
                 ))}
               </div>
+              <RoadmapProgress role={currentRole} stages={analysis.roadmap} />
             </div>
           )}
 
-          {/* TAB 3: Verified Learning Resources */}
+           {/* TAB 3: Learning Resources */}
           {activeTab === 'learning' && (
             <div className="space-y-4 animate-fade-in">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-                Verified courses and tutorials targeting your competency gaps for {currentRole}.
+                 Resources returned by the backend for your competency gaps in {currentRole}; availability and quality may change.
               </div>
-
               <div className="grid sm:grid-cols-2 gap-4">
                 {analysis.learning_resources.map((res) => (
                   <div
@@ -466,6 +508,6 @@ export const SkillGapPage: React.FC<SkillGapPageProps> = ({
           )}
         </>
       )}
-    </div>
+    </main>
   );
 };

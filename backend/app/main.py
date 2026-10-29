@@ -3,6 +3,7 @@
 FastAPI application entry point.
 """
 from contextlib import asynccontextmanager
+import asyncio
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -11,14 +12,37 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.app.api import api_router
 from backend.app.core.config import PROJECT_ROOT, settings
-from backend.app.core.database import init_db
+from backend.app.core.database import SessionLocal, init_db
+from backend.app.services.job_ingestion import ingest_external_jobs
+
+
+async def _scheduled_ingestion() -> None:
+    """Single-instance opt-in refresh loop; disabled by default.
+
+    Deploy this only in one API worker. Provider-level run guards prevent
+    overlapping refreshes inside the process and preserve cached results on
+    upstream failure.
+    """
+    while True:
+        await asyncio.sleep(max(5, settings.ingestion_interval_minutes * 60))
+        db = SessionLocal()
+        try:
+            await asyncio.to_thread(ingest_external_jobs, db)
+        finally:
+            db.close()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize database on startup."""
     init_db()
-    yield
+    task = asyncio.create_task(_scheduled_ingestion()) if settings.enable_ingestion_scheduler else None
+    try:
+        yield
+    finally:
+        if task:
+            task.cancel()
+            await asyncio.gather(task, return_exceptions=True)
 
 
 app = FastAPI(

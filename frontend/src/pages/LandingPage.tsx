@@ -16,8 +16,10 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, health }) => {
+  const annReady = health?.model_type === 'tensorflow';
+  const modelLabel = annReady ? 'ANN model ready' : health?.model_loaded ? 'Fallback model ready' : 'Model unavailable';
   return (
-    <div className="space-y-16 py-4 animate-fade-in">
+    <main className="page-shell space-y-16 py-4 animate-fade-in">
       {/* Hero Section */}
       <section className="text-center space-y-6 max-w-4xl mx-auto pt-6">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-xs font-semibold uppercase tracking-wider">
@@ -33,7 +35,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
         </h1>
 
         <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Vista Flare uses genuine Deep Learning and job-market intelligence to connect your
+           Vista Flare uses a trained deep-learning model and a local job-market catalog to connect your
           skills with the careers, companies, and learning paths that fit your future.
         </p>
 
@@ -67,17 +69,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
         </div>
 
         {/* Live System Health Badge */}
-        <div className="flex items-center justify-center gap-6 pt-4 text-xs text-slate-500">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-4 text-xs text-slate-500" aria-label="System status">
           <span className="inline-flex items-center gap-1.5">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                health?.model_loaded ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
-              }`}
-            />
-            {health?.model_loaded ? 'ANN Model Online' : 'Model Loading'}
+             <span role="status" aria-label={modelLabel}
+               className={`w-2 h-2 rounded-full ${
+                 annReady ? 'bg-emerald-500' : health?.model_loaded ? 'bg-amber-500' : 'bg-rose-500'
+               }`}
+             />
+             {modelLabel}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span
+            <span role="status" aria-label={health?.database_connected ? 'Database connected' : 'Database offline'}
               className={`w-2 h-2 rounded-full ${
                 health?.database_connected ? 'bg-emerald-500' : 'bg-rose-500'
               }`}
@@ -87,7 +89,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           {metrics && (
             <span className="inline-flex items-center gap-1.5 text-slate-600 font-medium">
               <Award className="w-3.5 h-3.5 text-indigo-500" />
-              ANN Top-3 Acc: {(metrics.top_3_accuracy * 100).toFixed(1)}%
+             ANN evaluation Top-3: {(metrics.top_3_accuracy * 100).toFixed(1)}%
             </span>
           )}
         </div>
@@ -99,7 +101,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           <div className="w-11 h-11 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-4">
             <Brain className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Deep Learning Matching</h3>
+           <h2 className="text-lg font-bold text-slate-900 mb-2">Deep Learning Matching</h2>
           <p className="text-sm text-slate-600 leading-relaxed mb-4">
             Trained multi-class Artificial Neural Network (MLP) analyzing 373 normalized skill
             features to predict your top 3 career pathways with Softmax probability confidence.
@@ -116,7 +118,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
             <Compass className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Skill Gap & Roadmap</h3>
+           <h2 className="text-lg font-bold text-slate-900 mb-2">Skill Gap & Roadmap</h2>
           <p className="text-sm text-slate-600 leading-relaxed mb-4">
             Deterministic gap analysis breaking down Strong, Developing, and Missing skills with a
             5-stage personalized roadmap and curated courses.
@@ -133,16 +135,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4">
             <Briefcase className="w-6 h-6" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">Real Job Market Fit</h3>
+           <h2 className="text-lg font-bold text-slate-900 mb-2">Job Market Fit</h2>
           <p className="text-sm text-slate-600 leading-relaxed mb-4">
-            Discover matching job openings, company skill alignment scores, salary disclosures,
-            and demand trends across tech hubs.
+             Explore catalogued job postings, company skill alignment scores, salary disclosures,
+             and demand trends. Availability is not guaranteed to be live.
           </p>
           <button
-            onClick={() => onNavigate('jobs')}
+             onClick={() => onNavigate('market')}
             className="text-xs font-semibold text-purple-600 hover:text-purple-700 inline-flex items-center gap-1"
           >
-            Browse Verified Roles &rarr;
+             Browse Catalogued Roles &rarr;
           </button>
         </div>
       </section>
@@ -153,15 +155,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-300 text-xs font-medium">
-                Academic Model Provenance
+                 Model Report Provenance
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                Authentic Deep Learning Results
+                 Available Deep Learning Results
               </h2>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Every metric is generated from actual training runs on a 22,000-profile role-aware
-                dataset using stratified train/val/test splits. We provide full confusion matrices,
-                accuracy/loss plots, and academic comparisons.
+                 Metrics and charts are presented from the available model report artifacts. We provide
+                 confusion matrices, accuracy/loss plots, and model comparisons when those artifacts exist.
               </p>
               <div className="flex gap-4 pt-2">
                 <button
@@ -247,6 +248,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, metrics, h
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 };

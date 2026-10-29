@@ -1,14 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState, type ElementType, type ReactNode } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Sparkles,
-  Brain,
-  Compass,
-  TrendingUp,
-  Building2,
-  Award,
   Layers,
+  Award,
+  Compass,
+  Map,
+  TrendingUp,
+  Bookmark,
+  Briefcase,
+  Building2,
+  SlidersHorizontal,
+  BookOpen,
+  Activity,
+  FileText,
+  HelpCircle,
+  Brain,
+  UserRound,
+  Settings,
+  Bell,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
   Menu,
   X,
+  ExternalLink,
+  Loader2,
+  Mail,
+  Workflow,
+  Layers3,
+  GitBranch,
+  Database,
 } from 'lucide-react';
 import { api } from './api/client';
 import { LandingPage } from './pages/LandingPage';
@@ -18,41 +40,133 @@ import { SkillGapPage } from './pages/SkillGapPage';
 import { JobMarketPage } from './pages/JobMarketPage';
 import { CompanyDirectoryPage } from './pages/CompanyDirectoryPage';
 import { DeepLearningLabPage } from './pages/DeepLearningLabPage';
-import {
-  SelectedSkill,
-  ModelMetrics,
-  Skill,
-  Role,
-  CareerRecommendation,
-  HealthResponse,
-} from './types';
+import { AIModelWorkflowsPage } from './pages/AIModelWorkflowsPage';
+import { LearningResourcesPage, MarketTrendsPage } from './pages/DiscoverPages';
+import { ResumeCoachPage, InterviewPrepPage, SettingsPage, NotificationsPage } from './pages/CareerToolsPages';
+import { ApplicationsPage, ComparisonPage, ProfilePage, RoadmapPage, SavedPage } from './pages/WorkspacePages';
+import { LoginPage, RegisterPage } from './pages/AuthPages';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { StatusBanner, StatusPill } from './components/ui';
+import { VistaFlareLogo } from './components/VistaFlareLogo';
+import { SelectedSkill, ModelMetrics, Skill, Role, CareerRecommendation, HealthResponse } from './types';
+import { useLocalJourney, validHistory, validRecommendations, validSavedRoles, validSkills, type AnalysisHistory } from './localJourney';
+import { useAuth } from './auth/AuthContext';
 
-type ViewMode = 'home' | 'skills' | 'matches' | 'skill-gap' | 'market' | 'companies' | 'lab';
+export interface NavItemConfig {
+  id: string;
+  path: string;
+  label: string;
+  icon: ElementType;
+  badge?: string;
+}
+
+interface NavGroupConfig {
+  label: string;
+  items: NavItemConfig[];
+}
+
+const navGroups: NavGroupConfig[] = [
+  {
+    label: 'Workspace',
+    items: [
+      { id: 'home', path: '/', label: 'Overview', icon: Sparkles },
+      { id: 'skills', path: '/skills', label: 'Skills & Profile', icon: Layers },
+      { id: 'matches', path: '/matches', label: 'Career Matches', icon: Award },
+      { id: 'skill-gap', path: '/skill-gap', label: 'Skill Gap Analysis', icon: Compass },
+      { id: 'roadmap', path: '/roadmap', label: 'Career Roadmap', icon: Map },
+    ],
+  },
+  {
+    label: 'Discover',
+    items: [
+      { id: 'market', path: '/market', label: 'Job Market', icon: TrendingUp },
+      { id: 'saved', path: '/saved', label: 'Saved Jobs', icon: Bookmark },
+      { id: 'applications', path: '/applications', label: 'Applications', icon: Briefcase },
+      { id: 'companies', path: '/companies', label: 'Companies', icon: Building2 },
+      { id: 'compare', path: '/compare', label: 'Career Comparison', icon: SlidersHorizontal },
+      { id: 'learning', path: '/learning', label: 'Learning Resources', icon: BookOpen },
+      { id: 'trends', path: '/trends', label: 'Market Trends', icon: Activity },
+    ],
+  },
+  {
+    label: 'AI & Model Workflows',
+    items: [
+      { id: 'wf-system', path: '/ai-model-workflows?tab=system', label: 'System Workflow', icon: Workflow },
+      { id: 'wf-architectures', path: '/ai-model-workflows?tab=architectures', label: 'Model Architectures', icon: Layers3 },
+      { id: 'wf-training', path: '/ai-model-workflows?tab=training', label: 'Training Pipeline', icon: GitBranch },
+      { id: 'wf-inference', path: '/ai-model-workflows?tab=inference', label: 'Live Inference', icon: Activity },
+      { id: 'wf-evaluation', path: '/ai-model-workflows?tab=evaluation', label: 'Evaluation & Comparison', icon: Brain },
+      { id: 'wf-data', path: '/ai-model-workflows?tab=data', label: 'Live Data Pipeline', icon: Database },
+    ],
+  },
+  {
+    label: 'Career Tools',
+    items: [
+      { id: 'resume', path: '/resume', label: 'Resume & Job Matching', icon: FileText },
+      { id: 'interview', path: '/interview', label: 'Interview Preparation', icon: HelpCircle },
+      { id: 'lab', path: '/lab', label: 'Deep Learning Lab', icon: Brain },
+    ],
+  },
+  {
+    label: 'Account',
+    items: [
+      { id: 'profile', path: '/profile', label: 'Profile', icon: UserRound },
+      { id: 'settings', path: '/settings', label: 'Settings', icon: Settings },
+      { id: 'notifications', path: '/notifications', label: 'Notifications', icon: Bell },
+    ],
+  },
+];
+
+const ROUTE_TITLES: Record<string, string> = {
+  '/': 'Overview',
+  '/skills': 'Skills & Profile',
+  '/matches': 'Career Recommendations',
+  '/skill-gap': 'Skill Gap Analysis & Roadmap',
+  '/roadmap': 'Saved Career Roadmaps',
+  '/market': 'Job Market Intelligence',
+  '/saved': 'Saved Jobs',
+  '/applications': 'Application Tracker',
+  '/companies': 'Company Directory',
+  '/compare': 'Career Comparison Studio',
+  '/learning': 'Learning Resources',
+  '/trends': 'Market Trends',
+  '/resume': 'Resume & Job Matching',
+  '/interview': 'Interview Preparation',
+  '/lab': 'Deep Learning Lab',
+  '/ai-model-workflows': 'AI & Model Workflows',
+  '/profile': 'Account Profile',
+  '/settings': 'Alert Preferences & Settings',
+  '/notifications': 'Notifications',
+  '/login': 'Sign In',
+  '/register': 'Create Account',
+};
 
 export function App() {
-  const [currentView, setCurrentView] = useState<ViewMode>('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [allSkills, setAllSkills] = useState<Skill[]>([]);
   const [allRoles, setAllRoles] = useState<Role[]>([]);
-  const [selectedSkills, setSelectedSkills] = useState<SelectedSkill[]>([
-    { name: 'Python', level: 'advanced' },
-    { name: 'SQL', level: 'advanced' },
-    { name: 'Pandas', level: 'intermediate' },
-    { name: 'Machine Learning', level: 'intermediate' },
-  ]);
-  const [recommendations, setRecommendations] = useState<CareerRecommendation[]>([]);
-  const [selectedRole, setSelectedRole] = useState<string>('Data Scientist');
+  const [selectedSkills, setSelectedSkills, skillsStorageError] = useLocalJourney<SelectedSkill[]>('skills', [], validSkills);
+  const [recommendations, setRecommendations, recommendationsStorageError] = useLocalJourney<CareerRecommendation[]>('recommendations', [], validRecommendations);
+  const [selectedRole, setSelectedRole] = useLocalJourney<string>('selected-role', '', (v): v is string => typeof v === 'string' && v.length <= 300);
+  const [savedRoles, setSavedRoles, savedRolesStorageError] = useLocalJourney<string[]>('saved-careers', [], validSavedRoles);
+  const [history, setHistory, historyStorageError] = useLocalJourney<AnalysisHistory[]>('analysis-history', [], validHistory);
   const [metrics, setMetrics] = useState<ModelMetrics | null>(null);
   const [health, setHealth] = useState<HealthResponse | null>(null);
+  const [predictionModel, setPredictionModel] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [initialLoadError, setInitialLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadInitialData();
+    void loadInitialData();
   }, []);
 
   const loadInitialData = async () => {
     try {
+      setInitialLoadError(null);
       const [skillsData, rolesData, metricsData, healthData] = await Promise.all([
         api.getSkills(),
         api.getRoles(),
@@ -65,11 +179,12 @@ export function App() {
       setHealth(healthData);
     } catch (err) {
       console.error('Initial data load error:', err);
+      setInitialLoadError(err instanceof Error ? err.message : 'Could not load catalog data.');
     }
   };
 
   const handlePredict = async () => {
-    if (selectedSkills.length === 0) {
+    if (!selectedSkills.length) {
       setError('Please add at least one skill to run predictions.');
       return;
     }
@@ -77,11 +192,19 @@ export function App() {
     setError(null);
     try {
       const res = await api.predict(selectedSkills);
+      setPredictionModel(res.model);
       setRecommendations(res.recommendations);
-      if (res.recommendations.length > 0) {
-        setSelectedRole(res.recommendations[0].role);
-      }
-      setCurrentView('matches');
+      setHistory([
+        {
+          at: new Date().toISOString(),
+          skills: selectedSkills,
+          recommendations: res.recommendations,
+          model: res.model,
+        },
+        ...history,
+      ].slice(0, 10));
+      if (res.recommendations.length) setSelectedRole(res.recommendations[0].role);
+      navigate('/matches');
     } catch (err: any) {
       setError(err?.message || 'Prediction failed. Please ensure the backend is running.');
     } finally {
@@ -89,225 +212,637 @@ export function App() {
     }
   };
 
+  const storageNotice = [skillsStorageError, recommendationsStorageError, savedRolesStorageError, historyStorageError].find(Boolean);
+
   const handleSelectRoleForGap = (roleName: string) => {
     setSelectedRole(roleName);
-    setCurrentView('skill-gap');
+    navigate('/skill-gap');
   };
 
   const handleExploreJobs = (roleName: string) => {
     setSelectedRole(roleName);
-    setCurrentView('market');
+    navigate('/market');
   };
 
-  const navItems: { id: ViewMode; label: string; icon: React.ElementType; badge?: string }[] = [
-    { id: 'home', label: 'Home', icon: Sparkles },
-    { id: 'skills', label: 'Skills & Profile', icon: Layers },
-    {
-      id: 'matches',
-      label: 'Career Matches',
-      icon: Award,
-      badge: recommendations.length > 0 ? 'Top 3' : undefined,
-    },
-    { id: 'skill-gap', label: 'Skill Gap & Roadmap', icon: Compass },
-    { id: 'market', label: 'Job Market', icon: TrendingUp },
-    { id: 'companies', label: 'Companies', icon: Building2 },
-    { id: 'lab', label: 'Deep Learning Lab', icon: Brain },
-  ];
+  // Dynamic document title
+  const currentTitle = ROUTE_TITLES[location.pathname] ||
+    (location.pathname.startsWith('/roles/') ? 'Career Role Details' :
+     location.pathname.startsWith('/jobs/') ? 'Job Posting Details' : 'Page Not Found');
+
+  useEffect(() => {
+    document.title = `${currentTitle} — Vista Flare`;
+  }, [currentTitle]);
+
+  const renderContent = () => {
+    const p = location.pathname;
+    if (p === '/') {
+      return <LandingPage onNavigate={(view) => navigate(view === 'home' ? '/' : `/${view}`)} metrics={metrics} health={health} />;
+    }
+    if (p === '/skills') {
+      return <SkillAnalyzerPage availableSkills={allSkills} selectedSkills={selectedSkills} onChangeSkills={setSelectedSkills} onAnalyze={handlePredict} loading={loading} error={error} />;
+    }
+    if (p === '/matches') {
+      return (
+        <CareerMatchesPage
+          recommendations={recommendations}
+          selectedSkills={selectedSkills}
+          model={predictionModel || history[0]?.model || health?.model_type || null}
+          onSelectRole={handleSelectRoleForGap}
+          onExploreJobs={handleExploreJobs}
+          onReset={() => navigate('/skills')}
+          savedRoles={savedRoles}
+          onToggleSavedRole={(role) =>
+            setSavedRoles(savedRoles.includes(role) ? savedRoles.filter((r) => r !== role) : [...savedRoles, role])
+          }
+        />
+      );
+    }
+    if (p === '/skill-gap') {
+      return <SkillGapPage initialRole={selectedRole} allRoles={allRoles} selectedSkills={selectedSkills} onSelectRole={setSelectedRole} onExploreJobs={handleExploreJobs} />;
+    }
+    if (p === '/roadmap') {
+      return <RoadmapPage />;
+    }
+    if (p === '/market') {
+      return <JobMarketPage initialRoleFilter={selectedRole} profileSkills={selectedSkills.map((skill) => skill.name)} onSelectRole={handleSelectRoleForGap} />;
+    }
+    if (p === '/saved') {
+      return <SavedPage />;
+    }
+    if (p === '/applications') {
+      return <ApplicationsPage />;
+    }
+    if (p === '/companies') {
+      return <CompanyDirectoryPage onExploreRole={handleSelectRoleForGap} />;
+    }
+    if (p === '/compare') {
+      return <ComparisonPage />;
+    }
+    if (p === '/learning') {
+      return <LearningResourcesPage />;
+    }
+    if (p === '/trends') {
+      return <MarketTrendsPage />;
+    }
+    if (p === '/resume') {
+      return <ResumeCoachPage />;
+    }
+    if (p === '/interview') {
+      return <InterviewPrepPage />;
+    }
+    if (p === '/lab') {
+      return <DeepLearningLabPage />;
+    }
+    if (p === '/ai-model-workflows') {
+      return <AIModelWorkflowsPage />;
+    }
+    if (p === '/profile') {
+      return <ProfilePage />;
+    }
+    if (p === '/settings') {
+      return <SettingsPage />;
+    }
+    if (p === '/notifications') {
+      return <NotificationsPage />;
+    }
+    if (p === '/login') {
+      return <LoginPage />;
+    }
+    if (p === '/register') {
+      return <RegisterPage />;
+    }
+    if (p.startsWith('/roles/')) {
+      return <DetailPage type="role" idOrName={decodeURIComponent(p.slice(7))} />;
+    }
+    if (p.startsWith('/jobs/')) {
+      return <DetailPage type="job" idOrName={decodeURIComponent(p.slice(6))} />;
+    }
+    return <NotFoundPage />;
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Brand */}
-          <div
-            onClick={() => setCurrentView('home')}
-            className="flex items-center gap-3 cursor-pointer select-none"
+    <AppShell
+      health={health}
+      user={user}
+      pageTitle={currentTitle}
+      recommendationsCount={recommendations.length}
+    >
+      {initialLoadError && (
+        <StatusBanner tone="danger" action={<button type="button" className="font-semibold underline" onClick={() => void loadInitialData()}>Retry</button>}>
+          {initialLoadError}
+        </StatusBanner>
+      )}
+      {storageNotice && (
+        <div className="mt-3">
+          <StatusBanner tone="warning">Local journey storage note: {storageNotice}</StatusBanner>
+        </div>
+      )}
+      <div className="mt-4">{renderContent()}</div>
+    </AppShell>
+  );
+}
+
+interface AppShellProps {
+  children: ReactNode;
+  health: HealthResponse | null;
+  user: any;
+  pageTitle: string;
+  recommendationsCount: number;
+}
+
+function AppShell({ children, health, user, pageTitle, recommendationsCount }: AppShellProps) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return window.localStorage.getItem('vista-flare-sidebar-collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const menuRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const displayName = user?.display_name || user?.name || user?.email?.split('@')[0];
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('vista-flare-sidebar-collapsed', String(collapsed));
+    } catch {
+      // Optional preference storage
+    }
+  }, [collapsed]);
+
+  useEffect(() => {
+    if (!mobileOpen) {
+      menuButtonRef.current?.focus();
+      return;
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    menuRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileOpen]);
+
+  const modelStatus = health
+    ? health.model_type === 'tensorflow'
+      ? { label: 'ANN model active', tone: 'success' as const }
+      : health.model_loaded
+      ? { label: 'Fallback classifier', tone: 'warning' as const }
+      : { label: 'Model offline', tone: 'danger' as const }
+    : { label: 'Connecting...', tone: 'neutral' as const };
+
+  const renderNavList = (isCollapsed: boolean) => (
+    <div className="vf-sidebar-nav">
+      {navGroups.map((group) => (
+        <div key={group.label} className="vf-sidebar-group">
+          <div className="vf-sidebar-label">{group.label}</div>
+          {group.items.map((item) => {
+            const Icon = item.icon;
+            const currentFullPath = location.pathname + (location.pathname === '/ai-model-workflows' ? (location.search || '?tab=system') : location.search);
+            const isActive = item.path.includes('?')
+              ? currentFullPath === item.path
+              : (location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path)));
+            const badge = item.id === 'matches' && recommendationsCount > 0 ? 'Top 3' : undefined;
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className="vf-nav-link"
+                aria-current={isActive ? 'page' : undefined}
+                aria-label={isCollapsed ? item.label : undefined}
+                title={isCollapsed ? item.label : undefined}
+                onClick={() => {
+                  navigate(item.path);
+                  setMobileOpen(false);
+                }}
+              >
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="vf-nav-text">{item.label}</span>
+                {badge && <span className="vf-nav-badge">{badge}</span>}
+              </button>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className={`vf-shell ${collapsed ? 'vf-sidebar-collapsed' : ''}`}>
+      {/* Desktop Sticky Left Navigation Sidebar */}
+      <aside className="vf-sidebar" aria-label="Primary navigation">
+        {/* Brand Header */}
+        <div className="vf-sidebar-brand">
+          <button
+            type="button"
+            className="vf-brand-button"
+            onClick={() => navigate('/')}
+            aria-label="Vista Flare Home"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-600 via-indigo-600 to-accent-600 flex items-center justify-center text-white shadow-md shadow-primary-500/20">
-              <Sparkles className="w-5 h-5" />
+            {collapsed ? (
+              <VistaFlareLogo variant="icon" size={32} />
+            ) : (
+              <VistaFlareLogo variant="full" size={34} />
+            )}
+          </button>
+          <button
+            type="button"
+            className="vf-collapse-button"
+            onClick={() => setCollapsed((v) => !v)}
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </button>
+        </div>
+
+        {/* Sidebar Nav */}
+        {renderNavList(collapsed)}
+
+        {/* Sidebar Bottom Controls */}
+        <div className="vf-sidebar-bottom">
+          <div className="vf-sidebar-status">
+            {!collapsed && <span className="vf-sidebar-status-label">Inference Status</span>}
+            <StatusPill tone={modelStatus.tone} title={health?.model_load_error || undefined}>
+              {collapsed ? <span className="sr-only">{modelStatus.label}</span> : modelStatus.label}
+            </StatusPill>
+          </div>
+
+          {displayName ? (
+            <div className="space-y-1">
+              <button
+                type="button"
+                className="vf-sidebar-account"
+                onClick={() => navigate('/profile')}
+                title={`Signed in as ${displayName}`}
+              >
+                <span className="vf-avatar">{displayName.slice(0, 1).toUpperCase()}</span>
+                <span className="vf-account-copy">
+                  <strong>{displayName}</strong>
+                  <small>Profile &amp; Settings</small>
+                </span>
+              </button>
+              {!collapsed && (
+                <button
+                  type="button"
+                  onClick={() => void logout()}
+                  className="w-full text-left px-3 py-1.5 text-[11px] font-semibold text-slate-500 hover:text-rose-600 flex items-center gap-1.5 rounded-lg transition-colors"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  Sign Out
+                </button>
+              )}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="vf-sidebar-account"
+              onClick={() => navigate('/login')}
+            >
+              <UserRound className="h-4 w-4" />
+              <span className="vf-account-copy">
+                <strong>Sign In</strong>
+                <small>Sync progress across devices</small>
+              </span>
+            </button>
+          )}
+        </div>
+      </aside>
+
+      {/* Mobile Drawer Backdrop */}
+      {mobileOpen && (
+        <button
+          type="button"
+          className="vf-mobile-backdrop lg:hidden"
+          aria-label="Close navigation menu"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* Main Content Column */}
+      <div className="vf-main-column">
+        {/* Minimal Top Utility Bar */}
+        <header className="vf-topbar">
+          <div className="vf-topbar-inner">
+            <div className="flex items-center gap-3">
+              <button
+                ref={menuButtonRef}
+                type="button"
+                className="vf-mobile-menu lg:hidden"
+                aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-navigation"
+                onClick={() => setMobileOpen((v) => !v)}
+              >
+                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+
+              <div className="vf-breadcrumb">
+                <button
+                  type="button"
+                  onClick={() => navigate('/')}
+                  className="vf-eyebrow hover:text-slate-900 transition-colors"
+                >
+                  Vista Flare
+                </button>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                <span className="vf-page-title">{pageTitle}</span>
+              </div>
+            </div>
+
+            <div className="vf-topbar-actions">
+              <StatusPill tone={modelStatus.tone} title={health?.model_load_error || undefined}>
+                {modelStatus.label}
+              </StatusPill>
+              {displayName ? (
+                <button
+                  type="button"
+                  className="vf-header-action lg:hidden"
+                  onClick={() => navigate('/profile')}
+                  aria-label="Account profile"
+                >
+                  <span className="vf-avatar">{displayName.slice(0, 1).toUpperCase()}</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="vf-header-action lg:hidden"
+                  onClick={() => navigate('/login')}
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* Mobile Navigation Drawer */}
+        {mobileOpen && (
+          <aside
+            ref={menuRef}
+            id="mobile-navigation"
+            className="vf-mobile-drawer lg:hidden"
+            aria-label="Mobile navigation"
+          >
+            <div className="vf-mobile-drawer-header">
+              <button
+                type="button"
+                className="flex items-center gap-2"
+                onClick={() => {
+                  navigate('/');
+                  setMobileOpen(false);
+                }}
+                aria-label="Vista Flare Home"
+              >
+                <VistaFlareLogo variant="full" size={30} />
+              </button>
+              <button
+                type="button"
+                className="vf-collapse-button"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close navigation menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            {renderNavList(false)}
+          </aside>
+        )}
+
+        {/* Page Content */}
+        <main className="vf-main-content">{children}</main>
+
+        {/* Professional Footer */}
+        <footer className="vf-footer">
+          <div className="vf-container py-8 text-xs text-slate-500 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <VistaFlareLogo variant="full" size={24} />
+                  <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-600 font-mono">v1.0.0</span>
+                </div>
+                <p className="text-xs text-slate-500">
+                  AI-Powered Career &amp; Skill Matching Platform powered by Deep Learning and Job Market Intelligence.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-600">
+                <button type="button" onClick={() => navigate('/lab')} className="hover:text-indigo-600">
+                  Model Lab
+                </button>
+                <button type="button" onClick={() => navigate('/skills')} className="hover:text-indigo-600">
+                  Skill Taxonomy
+                </button>
+                <button type="button" onClick={() => navigate('/compare')} className="hover:text-indigo-600">
+                  Compare Roles
+                </button>
+                <button type="button" onClick={() => navigate('/market')} className="hover:text-indigo-600">
+                  Job Market
+                </button>
+                <a
+                  href="mailto:support@vistaflare.local"
+                  className="inline-flex items-center gap-1 hover:text-indigo-600"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  Contact Support
+                </a>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-400">
+              <p>&copy; {new Date().getFullYear()} Vista Flare Platform. All rights reserved.</p>
+              <p>Transparent ML Provenance &bull; WCAG 2.2 Accessible &bull; Deterministic Skill Alignments</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function DetailPage({ type, idOrName }: { type: 'role' | 'job'; idOrName: string }) {
+  const [data, setData] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    if (type === 'role') {
+      const numericId = Number(idOrName);
+      if (!isNaN(numericId) && numericId > 0) {
+        api.getRole(numericId)
+          .then(setData)
+          .catch((err) => setError(err.message || 'Role not found.'))
+          .finally(() => setLoading(false));
+      } else {
+        api.getRoles()
+          .then((roles) => {
+            const found = roles.find((r) => r.name.toLowerCase() === idOrName.toLowerCase());
+            if (found) return api.getRole(found.id);
+            throw new Error(`Role "${idOrName}" not found in catalog.`);
+          })
+          .then(setData)
+          .catch((err) => setError(err.message || 'Role not found.'))
+          .finally(() => setLoading(false));
+      }
+    } else {
+      const numericId = Number(idOrName);
+      fetch(`/api/jobs/${numericId}`)
+        .then(async (r) => {
+          if (!r.ok) throw new Error('Job not found.');
+          return r.json();
+        })
+        .then(setData)
+        .catch((err) => setError(err.message || 'Job posting not found.'))
+        .finally(() => setLoading(false));
+    }
+  }, [type, idOrName]);
+
+  if (loading) {
+    return (
+      <div className="py-16 flex flex-col items-center justify-center text-slate-400 space-y-2">
+        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
+        <span className="text-xs">Loading {type === 'role' ? 'career role' : 'job posting'} details...</span>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="max-w-2xl mx-auto py-12 text-center space-y-4">
+        <div role="alert" className="p-5 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-800">
+          {error || 'Resource not found'}
+        </div>
+        <button
+          type="button"
+          onClick={() => navigate('/market')}
+          className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold"
+        >
+          Return to Job Market
+        </button>
+      </div>
+    );
+  }
+
+  if (type === 'role') {
+    return (
+      <article className="max-w-3xl mx-auto space-y-6">
+        <div>
+          <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">{data.category}</span>
+          <h1 className="text-3xl font-extrabold text-slate-900 mt-1">{data.name}</h1>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <h2 className="text-sm font-bold text-slate-900">Standardized Required Competencies</h2>
+          <div className="flex flex-wrap gap-1.5">
+            {data.skills?.map((s: any) => (
+              <span key={s.skill} className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700">
+                {s.skill} {s.required ? '(Core)' : ''}
+              </span>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 text-xs">
+            <div>
+              <span className="text-slate-500 block">Catalogued Openings</span>
+              <strong className="text-base text-slate-900">{data.job_count}</strong>
             </div>
             <div>
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-slate-900 to-indigo-900 bg-clip-text text-transparent">
-                Vista Flare
-              </span>
-              <span className="text-[10px] text-indigo-600 font-bold uppercase tracking-wider block -mt-1">
-                AI Career Intelligence
-              </span>
+              <span className="text-slate-500 block">Average Salary Range</span>
+              <strong className="text-base text-emerald-700">
+                {data.avg_salary_min && data.avg_salary_max
+                  ? `$${Math.round(data.avg_salary_min).toLocaleString()} – $${Math.round(data.avg_salary_max).toLocaleString()}`
+                  : 'Not disclosed'}
+              </strong>
             </div>
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentView === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                    isActive
-                      ? 'bg-slate-900 text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[9px] font-bold bg-indigo-500 text-white">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Right Status Badges & Mobile Menu Toggle */}
-          <div className="flex items-center gap-3">
-            {health && (
-              <div className="hidden sm:flex items-center gap-2">
-                <span
-                  title={health.model_loaded ? 'ANN Model loaded in memory' : 'Model not ready'}
-                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${
-                    health.model_loaded
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-amber-50 text-amber-700 border-amber-200'
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      health.model_loaded ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
-                    }`}
-                  />
-                  ANN Online
-                </span>
-              </div>
-            )}
-
+          <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-3">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100"
+              type="button"
+              onClick={() => navigate(`/skill-gap?role=${encodeURIComponent(data.name)}`)}
+              className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-colors"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              Analyze Skill Gap for this Role
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/market')}
+              className="px-4 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+            >
+              View in Job Market
             </button>
           </div>
         </div>
+      </article>
+    );
+  }
 
-        {/* Mobile Navigation Dropdown */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1 animate-fade-in shadow-lg">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentView === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setCurrentView(item.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`w-full px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between ${
-                    isActive ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500 text-white">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </header>
-
-      {/* Main View Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6">
-        {currentView === 'home' && (
-          <LandingPage
-            onNavigate={(view) => setCurrentView(view as ViewMode)}
-            metrics={metrics}
-            health={health}
-          />
-        )}
-
-        {currentView === 'skills' && (
-          <SkillAnalyzerPage
-            availableSkills={allSkills}
-            selectedSkills={selectedSkills}
-            onChangeSkills={setSelectedSkills}
-            onAnalyze={handlePredict}
-            loading={loading}
-            error={error}
-          />
-        )}
-
-        {currentView === 'matches' && (
-          <CareerMatchesPage
-            recommendations={recommendations}
-            selectedSkills={selectedSkills}
-            onSelectRole={handleSelectRoleForGap}
-            onExploreJobs={handleExploreJobs}
-            onReset={() => setCurrentView('skills')}
-          />
-        )}
-
-        {currentView === 'skill-gap' && (
-          <SkillGapPage
-            initialRole={selectedRole}
-            allRoles={allRoles}
-            selectedSkills={selectedSkills}
-            onSelectRole={setSelectedRole}
-            onExploreJobs={handleExploreJobs}
-          />
-        )}
-
-        {currentView === 'market' && (
-          <JobMarketPage
-            initialRoleFilter={selectedRole}
-            onSelectRole={handleSelectRoleForGap}
-          />
-        )}
-
-        {currentView === 'companies' && (
-          <CompanyDirectoryPage onExploreRole={handleSelectRoleForGap} />
-        )}
-
-        {currentView === 'lab' && <DeepLearningLabPage />}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white mt-16 py-8">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">Vista Flare</span>
-            <span>&bull;</span>
-            <span>AI-Powered Career & Skill Matching Platform</span>
-          </div>
-
-          <div className="flex items-center gap-4 text-[11px]">
-            <button onClick={() => setCurrentView('lab')} className="hover:text-slate-800 font-medium">
-              Deep Learning Lab
-            </button>
-            <button onClick={() => setCurrentView('market')} className="hover:text-slate-800 font-medium">
-              Job Market
-            </button>
-            <button onClick={() => setCurrentView('skills')} className="hover:text-slate-800 font-medium">
-              Skill Classifier
-            </button>
-            <span>&bull;</span>
-            <span>TensorFlow 2.18 / Keras 3</span>
-          </div>
+  return (
+    <article className="max-w-3xl mx-auto space-y-6">
+      <div>
+        <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">{data.company}</span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1">{data.title}</h1>
+      </div>
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+        <div className="flex flex-wrap gap-4 text-xs text-slate-600">
+          <span>Location: {data.location}</span>
+          <span>Work mode: {data.work_mode}</span>
+          <span>Role category: {data.role}</span>
         </div>
-      </footer>
-    </div>
+        {data.description && (
+          <div>
+            <h2 className="text-xs font-bold text-slate-900 mb-1">Description</h2>
+            <p className="text-xs text-slate-600 whitespace-pre-wrap">{data.description}</p>
+          </div>
+        )}
+        {data.skills?.length > 0 && (
+          <div>
+            <h2 className="text-xs font-bold text-slate-900 mb-2">Required Skills</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {data.skills.map((sk: string) => (
+                <span key={sk} className="px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700">
+                  {sk}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-3">
+          {data.source_url && (
+            <a
+              href={data.source_url}
+              target="_blank"
+              rel="noreferrer"
+              className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 transition-colors"
+            >
+              Open Original Posting <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => navigate('/market')}
+            className="px-4 py-2.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+          >
+            Back to Job Market
+          </button>
+        </div>
+      </div>
+    </article>
   );
 }
 

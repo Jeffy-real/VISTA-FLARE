@@ -78,8 +78,7 @@ npm install
 ### Start Backend
 
 ```bash
-cd backend
-python -m uvicorn app.main:app --reload --port 8000
+python -m uvicorn backend.app.main:app --reload --port 8000
 ```
 
 ### Start Frontend
@@ -131,6 +130,15 @@ python scripts/evaluate_models.py
 - `GET /api/jobs` - List jobs
 - `GET /api/learning` - List learning resources
 - `GET /api/model/metrics` - Model performance metrics
+
+The frontend stores the current skill profile, recommendations, saved career
+roles, and roadmap task statuses in versioned browser-local storage. This is
+not account-backed synchronization; clearing browser storage removes that
+local journey data.
+
+`GET /api/health` reports `degraded` when the TensorFlow ANN cannot be loaded,
+even when the existing scikit-learn fallback can serve predictions. The
+fallback is labeled in the UI rather than presented as the TensorFlow model.
 
 ## Dataset
 
