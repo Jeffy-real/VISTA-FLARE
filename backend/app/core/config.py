@@ -2,6 +2,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -32,6 +33,18 @@ class Settings(BaseSettings):
     adzuna_country: str = "gb"
     adzuna_query: str = ""
     inference_trace_retention_hours: int = 168
+
+    @field_validator("database_url", mode="after")
+    @classmethod
+    def normalize_database_url(cls, v: str) -> str:
+        if v.startswith("sqlite:///") and ":memory:" not in v:
+            raw = v.replace("sqlite:///", "")
+            p = Path(raw)
+            if not p.is_absolute():
+                clean = raw.lstrip("./").lstrip(".\\")
+                abs_path = (PROJECT_ROOT / clean).resolve()
+                return f"sqlite:///{abs_path.as_posix()}"
+        return v
 
     model_config = SettingsConfigDict(env_file=PROJECT_ROOT / ".env", extra="ignore", protected_namespaces=())
 

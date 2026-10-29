@@ -250,4 +250,22 @@ export const api = {
       body: JSON.stringify(payload),
     });
   },
+
+  // Admin Ingestion & Database Operational Status
+  async getAdminStatus(adminSecret: string): Promise<any> {
+    return fetchAPI<any>('/admin/status', {
+      headers: { 'X-Ingestion-Secret': adminSecret },
+    });
+  },
+
+  async triggerJobIngestion(adminSecret: string, provider?: string, limit = 50): Promise<any> {
+    const params = new URLSearchParams();
+    if (provider) params.set('provider', provider);
+    if (limit) params.set('limit', String(limit));
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return fetchAPI<any>(`/admin/jobs/ingest${query}`, {
+      method: 'POST',
+      headers: { 'X-Ingestion-Secret': adminSecret },
+    });
+  },
 };

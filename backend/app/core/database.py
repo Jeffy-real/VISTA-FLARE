@@ -35,6 +35,7 @@ def init_db() -> None:
     Base.metadata.create_all(bind=engine)
     _migrate_job_columns()
     _migrate_ingestion_columns()
+    _migrate_application_columns()
     _prune_expired_inference_traces()
     db = SessionLocal()
     try:
@@ -88,6 +89,16 @@ def _migrate_ingestion_columns() -> None:
             conn.execute(text("ALTER TABLE ingestion_runs ADD COLUMN created_count INTEGER DEFAULT 0"))
         if "updated_count" not in existing:
             conn.execute(text("ALTER TABLE ingestion_runs ADD COLUMN updated_count INTEGER DEFAULT 0"))
+
+
+def _migrate_application_columns() -> None:
+    """Ensure applications table has updated_at column."""
+    if "applications" not in inspect(engine).get_table_names():
+        return
+    existing = {c["name"] for c in inspect(engine).get_columns("applications")}
+    if "updated_at" not in existing:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE applications ADD COLUMN updated_at DATETIME"))
 
 
 def _prune_expired_inference_traces() -> None:

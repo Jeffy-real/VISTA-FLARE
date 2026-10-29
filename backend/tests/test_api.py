@@ -142,3 +142,32 @@ def test_get_jobs_endpoint():
     assert response.status_code == 200
     jobs = response.json()
     assert len(jobs) > 0
+
+
+def test_admin_status_auth_and_payload():
+    """Verify GET /api/admin/status requires valid secret and returns counts."""
+    from backend.app.core.config import get_settings
+
+    settings = get_settings()
+    unauth = client.get("/api/admin/status")
+    assert unauth.status_code == 403
+
+    invalid = client.get("/api/admin/status", headers={"x-ingestion-secret": "invalid-secret"})
+    assert invalid.status_code == 403
+
+    valid = client.get("/api/admin/status", headers={"x-ingestion-secret": settings.ingestion_admin_secret})
+    assert valid.status_code == 200
+    data = valid.json()
+    assert data["status"] == "authorized"
+    assert "counts" in data
+    assert data["counts"]["roles"] >= 80
+    assert "database" in data
+    assert "resolved_path" in data["database"]
+    assert "providers" in data
+
+
+def test_admin_ingest_auth_check():
+    """Verify POST /api/admin/jobs/ingest rejects unauthorized requests."""
+    unauth = client.post("/api/admin/jobs/ingest")
+    assert unauth.status_code == 403
+

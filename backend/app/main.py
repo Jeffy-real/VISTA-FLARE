@@ -2,8 +2,9 @@
 
 FastAPI application entry point.
 """
-from contextlib import asynccontextmanager
 import asyncio
+from contextlib import asynccontextmanager
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -14,6 +15,9 @@ from backend.app.api import api_router
 from backend.app.core.config import PROJECT_ROOT, settings
 from backend.app.core.database import SessionLocal, init_db
 from backend.app.services.job_ingestion import ingest_external_jobs
+from backend.app.services.job_provider import configured_external_providers
+
+logger = logging.getLogger("vista_flare.startup")
 
 
 async def _scheduled_ingestion() -> None:
@@ -34,7 +38,22 @@ async def _scheduled_ingestion() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize database on startup."""
+    """Initialize database and validate environment on startup."""
+    configured_providers = [p.name for p in configured_external_providers(settings)]
+    logger.info("Initializing Vista Flare in '%s' environment", settings.app_env)
+    logger.info("Database URL resolved: %s", settings.database_url)
+    logger.info("Configured external job providers: %s", configured_providers)
+    logger.info("Ingestion scheduler: %s", "ENABLED" if settings.enable_ingestion_scheduler else "DISABLED (manual only)")
+    logger.info("Admin authentication: %s", "CONFIGURED" if settings.ingestion_admin_secret else "UNCONFIGURED")
+
+    if settings.app_env == "production":
+        if settings.secret_key in ("dev-only-change-me", "REPLACE_WITH_A_RANDOM_SECRET", ""):
+            raise RuntimeError("CRITICAL: Production deployment requires a secure SECRET_KEY in environment variables.")
+        if not settings.ingestion_admin_secret or settings.ingestion_admin_secret.startswith("REPLACE"):
+            raise RuntimeError("CRITICAL: Production deployment requires a secure INGESTION_ADMIN_SECRET.")
+        if not settings.secure_cookies:
+            logger.warning("WARNING: SECURE_COOKIES is false in production environment.")
+
     init_db()
     task = asyncio.create_task(_scheduled_ingestion()) if settings.enable_ingestion_scheduler else None
     try:
